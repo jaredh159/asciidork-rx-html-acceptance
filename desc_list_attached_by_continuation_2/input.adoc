@@ -1,0 +1,8 @@
+// paragraph attached by a list continuation on either side to a multi-line element in a description list
+term1::
+def1
++
+more detail
++
+term2:: def2
+

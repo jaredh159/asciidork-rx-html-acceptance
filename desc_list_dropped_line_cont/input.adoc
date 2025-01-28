@@ -1,0 +1,8 @@
+// should continue to parse subsequent blocks attached to list item after first block is dropped
+:attribute-missing: drop-line
+
+term::
++
+image::{unresolved}[]
++
+paragraph

@@ -18,6 +18,7 @@ function processAdocFiles(dir) {
       const adocPath = fullpath;
       const htmlPath = fullpath.replace(/input\.adoc$/, `output.html`);
 
+      process.stdout.write(`Checking ${fullpath}...\n`);
       try {
         const html = execSync(
           `/Users/jared/jaredh159/asciidork/target/debug/asciidork -i ${adocPath} -s unsafe -e`,

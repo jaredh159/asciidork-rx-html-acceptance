@@ -1,0 +1,5 @@
+// should not hang on description list item in list that begins with ///
+* a
+///b::
+c
+

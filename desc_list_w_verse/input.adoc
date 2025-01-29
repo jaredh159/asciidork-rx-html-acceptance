@@ -1,0 +1,7 @@
+// verse paragraph inside a description list
+term1:: def
++
+[verse]
+la la la
+
+term2:: def

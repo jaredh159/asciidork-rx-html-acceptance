@@ -1,0 +1,7 @@
+// nested dlist attached by list continuation should not consume detached paragraph
+term:: text
++
+nested term::: text
+
+paragraph
+

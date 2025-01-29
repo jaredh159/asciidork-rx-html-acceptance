@@ -1,0 +1,7 @@
+// should not match comment line following list that looks like description list term
+* item
+
+//term:: desc
+== Section
+
+section text

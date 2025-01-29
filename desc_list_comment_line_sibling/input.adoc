@@ -1,0 +1,8 @@
+// should not match comment line that looks like sibling description list term
+before
+
+foo:: bar
+//yin:: yang
+
+after
+

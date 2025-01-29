@@ -1,0 +1,12 @@
+// should only grab one line following last item if item has no inline description
+term1::
+
+def1
+
+term2::
+
+def2
+
+A new paragraph
+
+Another new paragraph

@@ -1,0 +1,4 @@
+// should not parse a nested dlist delimiter without a term as a dlist
+t::
+;;
+

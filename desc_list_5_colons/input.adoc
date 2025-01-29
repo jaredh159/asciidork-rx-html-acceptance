@@ -1,0 +1,3 @@
+// more than 4 consecutive colons should become part of description list term
+A term::::: a description
+

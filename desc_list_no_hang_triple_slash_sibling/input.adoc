@@ -1,0 +1,5 @@
+// should not hang on sibling description list item that begins with ///
+a::
+///b::
+c
+

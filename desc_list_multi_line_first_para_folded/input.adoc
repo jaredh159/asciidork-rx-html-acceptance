@@ -1,0 +1,6 @@
+// multi-line elements with first paragraph folded to text with adjacent nested element
+term1:: def1
+continued
+label1:::
+detail1
+

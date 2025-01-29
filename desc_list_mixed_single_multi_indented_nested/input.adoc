@@ -1,0 +1,6 @@
+// mixed single and multi-line elements with indented nested elements
+term1:: def1
+  label1:::
+   detail1
+term2:: def2
+

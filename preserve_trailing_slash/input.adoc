@@ -1,0 +1,11 @@
+|===
+a|
+----
+trailing slash should be preserved \
+----
+|===
+
+----
+preserved here as well \
+----
+

@@ -20,6 +20,8 @@ function processAdocFiles(dir) {
 
       process.stdout.write(`Checking ${fullpath}...\n`);
       try {
+        // test w/ windows line endings
+        // execSync(`/usr/bin/perl -i -pe 's/\\n/\\r\\n/' ${adocPath}`);
         const html = execSync(
           `/Users/jared/jaredh159/asciidork/target/debug/asciidork -i ${adocPath} -s unsafe -e`,
           { encoding: `utf8` }

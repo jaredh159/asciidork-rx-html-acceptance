@@ -1,0 +1,15 @@
+// performs normal substitutions on cell content
+:show_title: Cool new show
+
+|===
+|{show_title} |Coming soon...
+|===
+
+// should only substitute specialchars for literal table cells
+|===
+l|one
+*two*
+three
+<four>
+|===
+

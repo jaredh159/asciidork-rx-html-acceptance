@@ -1,0 +1,24 @@
+// styles not applied to header cells
+[cols="1h,1s,1e",options="header,footer"]
+|===
+|Name |Occupation| Website
+|Octocat |Social coding| https://github.com
+|Name |Occupation| Website
+|===
+
+// should apply text formatting to cells in implicit header row when column has a style
+[cols="2*a"]
+|===
+| _foo_ | *bar*
+
+| * list item
+| paragraph
+|===
+
+// should apply style and text formatting to cells in first row if no implicit header
+[cols="s,e"]
+|===
+| _strong_ | *emphasis*
+| strong
+| emphasis
+|===

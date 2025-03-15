@@ -1,0 +1,9 @@
+// uses explicit caption in front of title in place of default caption and number
+[caption="All the Data. "]
+.Simple psv table
+|=======
+|A |B |C
+|a |b |c
+|1 |2 |3
+|=======
+

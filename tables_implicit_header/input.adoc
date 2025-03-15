@@ -1,0 +1,60 @@
+// no implicit header row if AsciiDoc cell in first line spans multiple lines
+[cols=2*]
+|===
+a|contains AsciiDoc content
+
+* a
+* b
+* c
+a|contains no AsciiDoc content
+
+just text
+|A2
+|B2
+|===
+
+// no implicit header row if first line blank
+|===
+
+|Column 1 |Column 2
+
+|Data A1
+|Data B1
+
+|Data A2
+|Data B2
+
+|===
+
+// no implicit header row if noheader option is specified
+[%noheader]
+|===
+|Column 1 |Column 2
+
+|Data A1
+|Data B1
+
+|Data A2
+|Data B2
+|===
+
+// no implicit header row if cell in first line spans multiple lines
+[cols=2*]
+|===
+|A1
+
+
+A1 continued|B1
+
+|A2
+|B2
+|===
+
+// my own test
+[cols=2*,options="header"]
+|===
+|A1
+
+A2|B
+|===
+

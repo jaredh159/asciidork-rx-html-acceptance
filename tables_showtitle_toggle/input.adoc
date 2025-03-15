@@ -1,0 +1,12 @@
+// showtitle can be enabled in AsciiDoc table cell if unset in parent document
+= Document Title
+:!showtitle:
+
+|===
+a|
+= Nested Document Title
+:showtitle:
+
+content
+|===
+

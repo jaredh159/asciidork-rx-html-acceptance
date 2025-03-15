@@ -1,0 +1,22 @@
+// wip should preserving leading spaces but not leading newlines or trailing spaces in literal table cells
+[cols=2*]
+|===
+l|
+  one
+  two
+three
+
+  | normal
+|===
+
+// should ignore v table cell style
+[cols=2*]
+|===
+v|
+  one
+  two
+three
+
+  | normal
+|===
+

@@ -1,0 +1,10 @@
+// ignores cell with colspan that exceeds colspec
+[cols=2*]
+|===
+3+|A
+|B
+a|C
+
+more C
+|===
+

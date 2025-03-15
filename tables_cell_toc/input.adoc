@@ -1,0 +1,19 @@
+// should be able to enable toc in both outer document and in an AsciiDoc table cell
+= Document Title
+:toc:
+
+== Section A
+
+|===
+a|
+= Subdocument Title
+:toc: macro
+
+[#table-cell-toc]
+toc::[]
+
+== Subdocument Section A
+
+content
+|===
+

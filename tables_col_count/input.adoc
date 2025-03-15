@@ -1,0 +1,20 @@
+// first row sets number of columns when not specified
+|===
+|first |second |third |fourth
+|1 |2 |3
+|4
+|===
+
+// colspec attribute using asterisk syntax sets number of columns
+[cols="3*"]
+|===
+|A |B |C |a |b |c |1 |2 |3
+|===
+
+// table with explicit column count can have multiple rows on a single line
+[cols="3*"]
+|===
+|one |two
+|1 |2 |a |b
+|===
+

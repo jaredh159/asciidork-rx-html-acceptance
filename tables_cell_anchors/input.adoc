@@ -1,0 +1,26 @@
+// should catalog anchor at start of cell in implicit header row when column has a style
+[cols=1a]
+|===
+|[[foo,Foo]]* not AsciiDoc
+
+| AsciiDoc
+|===
+
+Foo <<foo>>.
+
+// should catalog anchor at start of cell in first row
+|===
+|[[xoo,Xoo]]foo
+| bar
+|===
+
+Baz <<xoo>>.
+
+// should catalog anchor at start of cell in explicit header row when column has a style
+[%header,cols=1a]
+|===
+|[[qoo,Qoo]]* not AsciiDoc
+| AsciiDoc
+|===
+
+Qoo <<qoo>>.

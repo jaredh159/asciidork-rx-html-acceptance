@@ -1,0 +1,33 @@
+// columns are added for empty records in colspec attribute
+[cols="<,"]
+|===
+|one |two
+|1 |2 |a |b
+|===
+
+// cols may be separated by semi-colon instead of comma
+[cols="1s;3m"]
+|===
+| strong
+| mono
+|===
+
+// cols attribute may include spaces
+[cols=" 1, 1 "]
+|===
+|one |two |1 |2 |a |b
+|===
+
+// blank cols attribute should be ignored
+[cols=" "]
+|===
+|one |two
+|1 |2 |a |b
+|===
+
+// empty cols attribute should be ignored
+[cols=""]
+|===
+|one |two
+|1 |2 |a |b
+|===

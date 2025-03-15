@@ -1,0 +1,18 @@
+// custom separator for an AsciiDoc table cell
+[cols=2,separator=!]
+|===
+!Pipe output to vim
+a!
+----
+asciidoctor -o - -s test.adoc | view -
+----
+|===
+
+// no implicit header row if cell in first line is quoted and spans multiple lines
+[cols=2*l]
+,===
+"A1
+
+A1 continued",B1
+A2,B2
+,===

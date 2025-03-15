@@ -1,0 +1,11 @@
+// should normalize frame value topbot as ends when converting to HTML
+[frame=topbot]
+|===
+|A |B |C
+|===
+
+// should preserve frame value ends when converting to HTML
+[frame=ends]
+|===
+|A |B |C
+|===

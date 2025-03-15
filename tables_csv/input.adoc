@@ -1,0 +1,87 @@
+// should treat trailing comma as an empty cell
+,===
+A1,
+B1,B2
+C1,C2
+,===
+
+// should log error but not crash if cell data has unclosed quote
+,===
+a,b
+c,"
+,===
+
+// should preserve newlines in quoted CSV values
+[cols="1,1,1l"]
+,===
+"A
+B
+C","one
+
+two
+
+three","do
+
+re
+
+me"
+,===
+
+// mixed unquoted records and quoted records with escaped quotes, commas, and wrapped lines
+[format="csv",options="header"]
+|===
+Year,Make,Model,Description,Price
+1997,Ford,E350,"ac, abs, moon",3000.00
+1999,Chevy,"Venture ""Extended Edition""","",4900.00
+1999,Chevy,"Venture ""Extended Edition, Very Large""",,5000.00
+1996,Jeep,Grand Cherokee,"MUST SELL!
+air, moon roof, loaded",4799.00
+2000,Toyota,Tundra,"""This one's gonna to blow you're socks off,"" per the sticker",10000.00
+2000,Toyota,Tundra,"Check it, ""this one's gonna to blow you're socks off"", per the sticker",10000.00
+|===
+
+// should allow quotes around a CSV value to be on their own lines
+[cols=2*]
+,===
+"
+A
+","
+B
+"
+,===
+
+// csv format shorthand
+,===
+a,b,c
+1,2,3
+,===
+
+// custom csv separator
+[format=csv,separator=;]
+|===
+a;b;c
+1;2;3
+|===
+
+// single cell in CSV table should only produce single row
+,===
+single cell
+,===
+
+// cell formatted with AsciiDoc style
+[cols="1,1,1a",separator=;]
+,===
+element;description;example
+
+thematic break,a visible break; also known as a horizontal rule;---
+,===
+
+// should strip whitespace around contents of AsciiDoc cell
+[cols="1,1,1a",separator=;]
+,===
+element;description;example
+
+paragraph;contiguous lines of words and phrases;"
+one sentence, one line
+"
+,===

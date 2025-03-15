@@ -1,0 +1,7 @@
+.Simple psv table
+[stripes=odd,float=left]
+|=======
+|A |B |C
+|a |b |c
+|1 |2 |3
+|=======

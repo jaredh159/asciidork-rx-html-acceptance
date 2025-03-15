@@ -1,0 +1,33 @@
+// callout numbers should be globally unique, including AsciiDoc table cells
+= Document Title
+
+== Section 1
+
+|===
+a|
+[source, yaml]
+----
+key: value <1>
+----
+<1> First callout
+|===
+
+== Section 2
+
+|===
+a|
+[source, yaml]
+----
+key: value <1>
+----
+<1> Second callout
+|===
+
+== Section 3
+
+[source, yaml]
+----
+key: value <1>
+----
+<1> Third callout
+

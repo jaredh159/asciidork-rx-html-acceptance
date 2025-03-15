@@ -1,0 +1,19 @@
+// ignores escaped separators
+|===
+|A \| here| a \| there
+|===
+
+// preserves escaped delimiters at the end of the line
+[%header,cols="1,1"]
+|===
+|A |B\|
+|A1 |B1\|
+|A2 |B2\|
+|===
+
+// should treat trailing pipe as an empty cell
+|===
+|A1 |
+|B1 |B2
+|C1 |C2
+|===

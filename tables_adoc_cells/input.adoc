@@ -1,0 +1,22 @@
+// AsciiDoc table cell should be wrapped in div with class "content"
+|===
+a|AsciiDoc table cell
+|===
+
+// basic AsciiDoc cell
+|===
+a|--
+NOTE: content
+
+content
+--
+|===
+
+// doctype can be set in AsciiDoc table cell
+|===
+a|
+:doctype: inline
+
+content
+|===
+

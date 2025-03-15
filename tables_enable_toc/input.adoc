@@ -1,0 +1,15 @@
+// should be able to enable toc in an AsciiDoc table cell
+= Document Title
+
+== Section A
+
+|===
+a|
+= Subdocument Title
+:toc:
+
+== Subdocument Section A
+
+content
+|===
+

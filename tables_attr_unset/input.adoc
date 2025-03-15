@@ -1,0 +1,18 @@
+// should keep attribute unset in AsciiDoc table cell if unset in parent document
+:!sectids:
+:!table-caption:
+
+== Outer Heading
+
+.Outer Table
+|===
+a|
+
+== Inner Heading
+
+.Inner Table
+!===
+! table cell
+!===
+|===
+

@@ -1,0 +1,15 @@
+// only increments table counter for tables that have a title
+.First numbered table
+|=======
+|1 |2 |3
+|=======
+
+|=======
+|4 |5 |6
+|=======
+
+.Second numbered table
+|=======
+|7 |8 |9
+|=======
+

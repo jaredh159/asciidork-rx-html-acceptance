@@ -1,0 +1,21 @@
+// nested table
+[cols="1,2a"]
+|===
+|Normal cell
+|Cell with nested table
+[cols="2,1"]
+!===
+!Nested table cell 1 !Nested table cell 2
+!===
+|===
+
+// can set format of nested table to psv
+[cols="2*"]
+|===
+|normal cell
+a|
+[format=psv]
+!===
+!nested cell
+!===
+|===

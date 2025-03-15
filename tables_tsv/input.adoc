@@ -1,0 +1,13 @@
+// tsv as format
+[format=tsv]
+,===
+a\tb\tc
+1\t2\t3
+,===
+
+// tab as separator
+[separator=\\t]
+,===
+a\tb\tc
+1\t2\t3
+,===

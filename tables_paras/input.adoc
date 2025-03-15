@@ -1,0 +1,18 @@
+// should not split paragraph at line containing only {blank} that is directly adjacent to non-blank lines
+|===
+|paragraph
+{blank}
+still one paragraph
+{blank}
+still one paragraph
+|===
+
+// should strip trailing newlines when splitting paragraphs
+|===
+|first wrapped
+paragraph
+
+second paragraph
+
+third paragraph
+|===

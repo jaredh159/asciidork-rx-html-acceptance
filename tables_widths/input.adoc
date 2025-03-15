@@ -1,0 +1,39 @@
+// table and column width not assigned when autowidth option is specified
+[options="autowidth"]
+|=======
+|A |B |C
+|a |b |c
+|1 |2 |3
+|=======
+
+// does not assign column width for autowidth columns in HTML output
+[cols="15%,3*~"]
+|=======
+|A |B |C |D
+|a |b |c |d
+|1 |2 |3 |4
+|=======
+
+// can assign autowidth to all columns even when table has a width
+[cols="4*~",width=50%]
+|=======
+|A |B |C |D
+|a |b |c |d
+|1 |2 |3 |4
+|=======
+
+// equally distributes remaining column width to autowidth columns in DocBook output
+[cols="15%,3*~"]
+|=======
+|A |B |C |D
+|a |b |c |d
+|1 |2 |3 |4
+|=======
+
+// explicit table width is used even when autowidth option is specified
+[%autowidth,width=75%]
+|=======
+|A |B |C
+|a |b |c
+|1 |2 |3
+|=======

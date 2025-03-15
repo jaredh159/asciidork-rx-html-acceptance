@@ -1,0 +1,57 @@
+// table with header and footer
+[options="header,footer"]
+|===
+|Item       |Quantity
+|Item 1     |1
+|Item 2     |2
+|Item 3     |3
+|Total      |6
+|===
+
+// table with implicit header row
+|===
+|Column 1 |Column 2
+
+|Data A1
+|Data B1
+
+|Data A2
+|Data B2
+|===
+
+// table with implicit header row
+|===
+|Column 1 |Column 2
+
+|Data A1
+|Data B1
+
+|Data A2
+|Data B2
+|===
+
+// table with implicit header row only
+|===
+|Column 1 |Column 2
+
+|===
+
+// table with implicit header row when other options set
+[%autowidth]
+|===
+|Column 1 |Column 2
+
+|Data A1
+|Data B1
+|===
+
+// no implicit header row if second line not blank
+|===
+|Column 1 |Column 2
+|Data A1
+|Data B1
+
+|Data A2
+|Data B2
+|===
+

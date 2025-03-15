@@ -1,0 +1,7 @@
+// supports repeating cells
+|===
+3*|A
+|1 3*|2
+|b |c
+|===
+

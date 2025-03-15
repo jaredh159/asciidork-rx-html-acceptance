@@ -1,0 +1,28 @@
+// should format first cell as literal if there is no implicit header row and column has l style
+[cols="1l,1"]
+|===
+|literal
+|normal
+|===
+
+// should format first cell as AsciiDoc if there is no implicit header row and column has a style
+[cols="1a,1"]
+|===
+| * list
+| normal
+|===
+
+// should interpret leading indent if first cell is AsciiDoc and there is no implicit header row
+[cols="1a,1"]
+|===
+|
+  literal
+| normal
+|===
+
+// should format first cell as AsciiDoc if there is no implicit header row and cell has a style
+|===
+a| * list
+| normal
+|===
+

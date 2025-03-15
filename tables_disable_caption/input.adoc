@@ -1,0 +1,17 @@
+// disables caption when caption attribute on table is empty
+[caption=]
+.Simple psv table
+|=======
+|A |B |C
+|a |b |c
+|1 |2 |3
+|=======
+
+[caption=""]
+.Simple psv table
+|=======
+|A |B |C
+|a |b |c
+|1 |2 |3
+|=======
+

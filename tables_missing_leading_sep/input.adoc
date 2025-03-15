@@ -1,0 +1,9 @@
+// should auto recover with warning if missing leading separator on first cell
+|===
+A | here| a | there
+| x
+| y
+| z
+| end
+|===
+

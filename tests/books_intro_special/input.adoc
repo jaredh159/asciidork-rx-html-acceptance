@@ -1,0 +1,15 @@
+// should allow part intro to be defined using special section
+= Book
+:doctype: book
+
+= Part 1
+
+[partintro]
+== Part Intro
+
+Part intro content
+
+== Chapter 1
+
+Chapter content
+

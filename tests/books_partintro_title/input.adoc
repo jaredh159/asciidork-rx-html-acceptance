@@ -1,0 +1,12 @@
+// should preserve title on partintro defined as partintro paragraph
+= Book
+:doctype: book
+
+= Part 1
+
+.Intro
+[partintro]
+Read this first.
+
+== Chapter 1
+

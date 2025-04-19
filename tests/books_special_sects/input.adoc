@@ -1,0 +1,27 @@
+= Book With Special Sects
+:doctype: book
+
+[preface]
+= Preface
+
+Preface content
+
+= Part 1
+
+[partintro]
+Part intro content
+
+== Chapter 1
+
+Chapter content 1.1
+
+= Part 2
+
+== Chapter 1
+
+Chapter content 2.1
+
+[appendix]
+= Appendix Title
+
+Appendix content

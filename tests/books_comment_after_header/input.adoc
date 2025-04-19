@@ -1,0 +1,16 @@
+= Invalid book
+:doctype: book
+
+// Comment after doc header
+
+[preface]
+= Preface
+
+Preface
+
+= Part
+
+== Section
+
+content
+

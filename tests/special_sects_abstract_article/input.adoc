@@ -1,0 +1,9 @@
+// abstract section maps to abstract element in docbook for article doctype
+= Article
+:idprefix:
+
+[abstract]
+== Abstract Title
+
+Abstract content
+

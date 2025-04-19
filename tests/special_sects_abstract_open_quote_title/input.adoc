@@ -1,0 +1,13 @@
+// should make abstract on open block with title a quote block with title for article
+= Article
+
+.My abstract
+[abstract]
+--
+This article is about stuff.
+--
+
+== Section One
+
+content
+

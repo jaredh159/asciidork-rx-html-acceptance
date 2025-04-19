@@ -1,0 +1,21 @@
+// should assign appropriate sectname for section type
+= Book Title
+:doctype: book
+:idprefix:
+:idseparator: -
+
+= Part Title
+
+== Chapter Title
+
+=== Section Title
+
+content
+
+[appendix]
+== Appendix Title
+
+=== Appendix Section Title
+
+content
+

@@ -45,7 +45,7 @@ if (!asciidorkBin) {
   process.exit(1);
 }
 
-processAdocFiles(__dirname, asciidorkBin, verbose);
+processAdocFiles(`${__dirname}/tests`, asciidorkBin, verbose);
 
 execSync(
   `${__dirname}/node_modules/.bin/prettier --write ${__dirname}/**/*.html`,

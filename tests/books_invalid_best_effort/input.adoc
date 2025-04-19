@@ -1,0 +1,9 @@
+= Invalid book
+:doctype: book
+
+Preamble
+
+= Invalid part
+
+No section
+

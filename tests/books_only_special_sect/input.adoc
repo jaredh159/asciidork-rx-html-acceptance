@@ -1,0 +1,9 @@
+= Book Title
+:doctype: book
+
+[dedication%notitle]
+== Dedication
+
+For S.S.T.--
+
+thank you for the plague of archetypes.

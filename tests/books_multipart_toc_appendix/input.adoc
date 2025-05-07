@@ -1,0 +1,24 @@
+= Article Title
+:appendix-caption: Exhibit
+:sectnums:
+:toc:
+:toclevels: 6
+
+== Section
+
+=== Subsection
+
+[appendix]
+== First Appendix
+
+=== First Subsection
+
+==== First Subsubsection
+
+===== First Subsubsubsection
+
+=== Second Subsection
+
+[appendix]
+== Second Appendix
+

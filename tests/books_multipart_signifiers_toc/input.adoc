@@ -1,0 +1,15 @@
+= The Secret Manual
+:doctype: book
+:sectnums:
+:partnums:
+:toc: macro
+:part-signifier: Part
+:chapter-signifier: Chapter
+
+toc::[]
+
+= Defensive Operations
+
+== An Introduction to DefenseOps
+
+= Managing Werewolves

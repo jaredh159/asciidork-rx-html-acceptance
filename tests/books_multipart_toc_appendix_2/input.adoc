@@ -1,0 +1,24 @@
+= Book Title
+:doctype: book
+:sectnums:
+:toc:
+
+= First Part
+
+== Chapter
+
+=== Subsection
+
+== Second Part
+
+== Chapter
+
+[appendix]
+= First Appendix
+
+=== First Subsection
+
+=== Second Subsection
+
+[appendix]
+= Second Appendix

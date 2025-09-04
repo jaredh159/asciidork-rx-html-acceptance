@@ -1,0 +1,13 @@
+// https://docs.asciidoctor.org/asciidoc/latest/attributes/attribute-entry-substitutions/
+:cols: pass:[.>2,.>4]
+:app-name: pass:quotes[MyApp^2^]
+
+here is {cols} and {app-name}.
+
+:app-name2: pass:q[MyApp^2^]
+
+here is {app-name2}.
+
+[subs="specialchars,attributes,quotes,replacements,macros,post_replacements"]
+The application is called {app-name}.
+

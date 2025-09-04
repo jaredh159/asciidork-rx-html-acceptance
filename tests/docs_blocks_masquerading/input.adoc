@@ -1,0 +1,13 @@
+// https://docs.asciidoctor.org/asciidoc/latest/blocks/masquerading/
+[listing]
+....
+a > b
+....
+
+[sidebar]
+This sidebar is short, so a styled paragraph will do.
+
+[NOTE]
+====
+Remember the milk.
+====

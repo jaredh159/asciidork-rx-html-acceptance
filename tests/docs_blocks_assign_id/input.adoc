@@ -1,0 +1,5 @@
+// https://docs.asciidoctor.org/asciidoc/latest/blocks/assign-id/
+[#the-id-of-this-block]
+====
+Content of delimited example block
+====

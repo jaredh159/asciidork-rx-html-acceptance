@@ -1,0 +1,37 @@
+....
+This text will be treated as verbatim content.
+....
+
+====
+This is an example of an example block.
+That's so meta.
+====
+
+====
+Here's a sample AsciiDoc document:
+
+----
+= Document Title
+Author Name
+
+Content goes here.
+----
+
+The document header is useful, but not required.
+====
+
+====
+Here are your options:
+
+.Red Pill
+[%collapsible]
+======
+Escape into the real world.
+======
+
+.Blue Pill
+[%collapsible]
+======
+Live within the simulated reality without want or fear.
+======
+====

@@ -1,0 +1,35 @@
+// https://docs.asciidoctor.org/asciidoc/latest/blocks/add-title/
+.This is the title of a sidebar block
+****
+This is the content of the sidebar block.
+****
+
+.Terminal Output
+....
+From github.com:asciidoctor/asciidoctor
+ * branch        main   -> FETCH_HEAD
+Already up to date.
+....
+
+.Specify GitLab CI stages
+[source,yaml]
+----
+image: node:16-buster
+stages: [ init, verify, deploy ]
+----
+
+.Mint
+[sidebar]
+Mint has visions of global conquest.
+If you don't plant it in a container, it will take over your garden.
+
+.Block that supports captioned title
+====
+Block content
+====
+
+.Block Title
+[caption="Example C: "]
+====
+Block content
+====

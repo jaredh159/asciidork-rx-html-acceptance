@@ -1,0 +1,35 @@
+```ruby,numbered
+puts "Hello, World!"
+```
+
+``` javascript, numbered
+alert("Hello, World!")
+```
+
+```ruby
+require 'sinatra'
+
+get '/hi' do
+  "Hello World!"
+end
+```
+
+```
+puts "Hello, World!"
+```
+
+````ruby
+puts "Hello, World!"
+````
+
+~~~~ javascript
+alert("Hello, World!")
+~~~~
+
+```ruby
+puts "Hello, World!"
+```
+
+``` javascript
+alert("Hello, World!")
+```

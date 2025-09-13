@@ -1,0 +1,14 @@
+// https://docs.asciidoctor.org/asciidoc/latest/attributes/attribute-entry-substitutions/
+= My Document
+:imagesdir: ./images
+:iconsdir: ./icons
+:stylesdir: ./styles
+:scriptsdir: ./js
+
+defaults: {imagesdir} {iconsdir} {stylesdir} {scriptsdir}
+
+:baz: quiz
+foo bar
+thing dong
+jim {baz}
+

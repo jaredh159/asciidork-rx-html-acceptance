@@ -1,0 +1,4177 @@
+<section id="preamble" aria-label="Preamble">
+  <p>
+    All DBMS privileges are relevant system-wide. Like user management, they do
+    not belong to one specific database or graph. For more details on the
+    differences between graphs, databases, and the DBMS, refer to
+    <a
+      href="{neo4j-docs-base-uri}/cypher-manual/{page-version}/introduction/cypher_neo4j/"
+      >Cypher Manual &#8594; Cypher and Neo4j</a
+    >.
+  </p>
+  <figure class="image-block">
+    <img
+      src="privileges_grant_and_deny_syntax_dbms_privileges.svg"
+      alt="privileges grant and deny syntax dbms privileges"
+    />
+    <figcaption>Figure 1. Syntax of GRANT and DENY DBMS Privileges</figcaption>
+  </figure>
+  <figure class="image-block">
+    <img src="privileges_hierarchy_dbms.svg" alt="privileges hierarchy dbms" />
+    <figcaption>Figure 2. DBMS privileges hierarchy</figcaption>
+  </figure>
+  <p>
+    The
+    <a
+      href="authentication-authorization/built-in-roles.html#access-control-built-in-roles-admin"
+      ><code>admin</code> role</a
+    >
+    has a number of built-in privileges. These include:
+  </p>
+  <div class="ulist">
+    <ul>
+      <li>Create, delete, and modify databases and aliases.</li>
+      <li>Change configuration parameters.</li>
+      <li>Manage transactions.</li>
+      <li>Manage users and roles.</li>
+      <li>Manage sub-graph privileges.</li>
+      <li>Manage procedure security.</li>
+      <li>Load data.</li>
+    </ul>
+  </div>
+  <p>
+    To enable a user to perform these tasks, you can grant them the
+    <code>admin</code> role, but it is also possible to make a custom role with
+    a subset of these privileges. All privileges are also assignable using
+    Cypher commands. For more details, see the following sections:
+  </p>
+  <div class="ulist">
+    <ul>
+      <li>
+        <a href="#access-control-dbms-administration-role-management"
+          >Role management</a
+        >
+      </li>
+      <li>
+        <a href="#access-control-dbms-administration-user-management"
+          >User management</a
+        >
+      </li>
+      <li>
+        <a href="#access-control-dbms-administration-impersonation"
+          >Impersonation privileges management</a
+        >
+      </li>
+      <li>
+        <a href="#access-control-dbms-administration-database-management"
+          >Database management</a
+        >
+      </li>
+      <li>
+        <a href="#access-control-dbms-administration-alias-management"
+          >Alias management</a
+        >
+      </li>
+      <li>
+        <a href="#access-control-dbms-administration-privilege-management"
+          >Privilege management</a
+        >
+      </li>
+      <li>
+        <a
+          href="authentication-authorization/database-administration.html#access-control-database-administration-transaction"
+          >Transaction management</a
+        >
+      </li>
+      <li>
+        <a href="#access-control-dbms-administration-execute"
+          >Procedure and user-defined function security</a
+        >
+      </li>
+      <li>
+        <a href="authentication-authorization/load-privileges.html"
+          >Load privileges</a
+        >
+      </li>
+    </ul>
+  </div>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-custom">
+    Using a custom role to manage DBMS privileges
+  </h2>
+  <p>
+    In order to have an administrator role with a subset of privileges that
+    includes all DBMS privileges, but not all database privileges, you can copy
+    the <code>admin</code> role and revoke or deny the unwanted privileges. A
+    second option is to build a custom administrator from scratch by granting
+    the wanted privileges instead.
+  </p>
+  <p>
+    As an example, an administrator role can be created to only manage users and
+    roles by using the second option:
+  </p>
+  <div class="olist arabic">
+    <ol class="arabic">
+      <li>
+        <p>First, create the new role:</p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">CREATE ROLE usermanager</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>Then grant the privilege to manage users:</p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT USER MANAGEMENT ON DBMS TO usermanager</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>And to manage roles:</p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT ROLE MANAGEMENT ON DBMS TO usermanager</code></pre>
+        </div>
+      </li>
+    </ol>
+  </div>
+  <p>
+    The resulting role has privileges that only allow user and role management.
+    To list all privileges for the role <code>usermanager</code> as commands,
+    run this query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE usermanager PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 1. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT ROLE MANAGEMENT ON DBMS TO <code>usermanager</code>"</code
+            >
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT USER MANAGEMENT ON DBMS TO <code>usermanager</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 2</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    Note that this role does not allow all DBMS capabilities. For example, the
+    role is missing privileges for management, creation and drop of databases as
+    well as execution of <code>admin</code> procedures. To create a more
+    powerful administrator, you can grant a different set of privileges.
+  </p>
+  <p>
+    In the following example, a new administrator role is created to perform
+    almost all DBMS capabilities, excluding database management. However, the
+    role still has some limited database capabilities, such as managing
+    transactions:
+  </p>
+  <div class="olist arabic">
+    <ol class="arabic">
+      <li>
+        <p>Again, start by creating a new role:</p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">CREATE ROLE customAdministrator</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>Then grant the privilege for all DBMS capabilities:</p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT ALL DBMS PRIVILEGES ON DBMS TO customAdministrator</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>
+          And explicitly deny the privilege to manage databases and aliases:
+        </p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">DENY DATABASE MANAGEMENT ON DBMS TO customAdministrator</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>Next, grant the transaction management privilege:</p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT TRANSACTION MANAGEMENT (*) ON DATABASE * TO customAdministrator</code></pre>
+        </div>
+      </li>
+    </ol>
+  </div>
+  <p>
+    The resulting role has privileges that include all DBMS privileges except
+    creating, dropping, and modifying databases and aliases, as well as managing
+    transactions. Use the following query to list all privileges for the role
+    <code>customAdministrator</code> as commands:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE customAdministrator PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 2. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"DENY DATABASE MANAGEMENT ON DBMS TO
+              <code>customAdministrator</code>"</code
+            >
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT ALL DBMS PRIVILEGES ON DBMS TO
+              <code>customAdministrator</code>"</code
+            >
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT TRANSACTION MANAGEMENT (*) ON DATABASE * TO
+              <code>customAdministrator</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 3</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-role-management">
+    The DBMS <code>ROLE MANAGEMENT</code> privileges
+  </h2>
+  <p>
+    The DBMS privileges for role management are assignable using Cypher
+    administrative commands. They can be granted, denied, and revoked like other
+    privileges.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      For more details about the syntax descriptions, see
+      <a href="database-administration/syntax.html"
+        >database-administration/syntax.html</a
+      >.
+    </p>
+  </aside>
+  <figure class="table-block">
+    <figcaption>Table 3. Role management privileges command syntax</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 60%" />
+        <col style="width: 40%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">Command</th>
+          <th class="halign-left valign-top">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] CREATE ROLE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to create new roles.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] RENAME ROLE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to change the name of roles.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] DROP ROLE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to delete roles.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] ASSIGN ROLE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to assign roles to users.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] REMOVE ROLE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to remove roles from users.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SHOW ROLE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to list roles.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] ROLE MANAGEMENT
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to create, delete, assign, remove, and
+            list roles.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+  <p>
+    The ability to add roles can be granted via the
+    <code>CREATE ROLE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT CREATE ROLE ON DBMS TO roleAdder</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow adding roles. List all
+    privileges for the role <code>roleAdder</code> as commands by using the
+    following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE roleAdder PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 4. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT CREATE ROLE ON DBMS TO <code>roleAdder</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to rename roles can be granted via the
+    <code>RENAME ROLE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT RENAME ROLE ON DBMS TO roleNameModifier</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow renaming roles. List all
+    privileges for the role <code>roleNameModifier</code> using the following
+    query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE roleNameModifier PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 5. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT RENAME ROLE ON DBMS TO
+              <code>roleNameModifier</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to delete roles can be granted via the
+    <code>DROP ROLE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT DROP ROLE ON DBMS TO roleDropper</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow deleting roles. List all
+    privileges for the role <code>roleDropper</code> by using the following
+    query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE roleDropper PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 6. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT DROP ROLE ON DBMS TO <code>roleDropper</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to assign roles to users can be granted via the
+    <code>ASSIGN ROLE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT ASSIGN ROLE ON DBMS TO roleAssigner</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow assigning/granting roles.
+    List all privileges for the role <code>roleAssigner</code> as commands by
+    using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE roleAssigner PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 7. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT ASSIGN ROLE ON DBMS TO <code>roleAssigner</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to remove roles from users can be granted via the
+    <code>REMOVE ROLE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT REMOVE ROLE ON DBMS TO roleRemover</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow removing/revoking roles.
+    List all privileges for the role <code>roleRemover</code> as commands by
+    using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE roleRemover PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 8. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT REMOVE ROLE ON DBMS TO <code>roleRemover</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to show roles can be granted via the
+    <code>SHOW ROLE</code> privilege. A role with this privilege is allowed to
+    execute the <code>SHOW ROLES</code> and
+    <code>SHOW POPULATED ROLES</code> administration commands. For the
+    <code>SHOW ROLES WITH USERS</code> and
+    <code>SHOW POPULATED ROLES WITH USERS</code> administration commands, both
+    this privilege and the <code>SHOW USER</code> privilege are required. The
+    following query shows an example of how to grant the
+    <code>SHOW ROLE</code> privilege:
+  </p>
+  <p>
+    In order to use <code>SHOW ROLES WITH USERS</code> and
+    <code>SHOW POPULATED ROLES WITH USERS</code> administration commands, both
+    the <code>SHOW ROLE</code> and the <code>SHOW USER</code> privileges are
+    required. See an example of how to grant the
+    <code>SHOW ROLE</code> privilege:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT SHOW ROLE ON DBMS TO roleShower</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow showing roles. List all
+    privileges for the role <code>roleShower</code> as commands by using the
+    following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE roleShower PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 9. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT SHOW ROLE ON DBMS TO <code>roleShower</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The privileges to create, rename, delete, assign, remove, and list roles can
+    be granted via the <code>ROLE MANAGEMENT</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT ROLE MANAGEMENT ON DBMS TO roleManager</code></pre>
+  </div>
+  <p>
+    The resulting role has all privileges to manage roles. List all privileges
+    for the role <code>roleManager</code> as commands by using the following
+    query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE roleManager PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 10. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT ROLE MANAGEMENT ON DBMS TO <code>roleManager</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-user-management">
+    The DBMS <code>USER MANAGEMENT</code> privileges
+  </h2>
+  <p>
+    The DBMS privileges for user management can be assigned using Cypher
+    administrative commands. They can be granted, denied, and revoked like other
+    privileges.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      For more details about the syntax descriptions, see
+      <a href="database-administration/syntax.html"
+        >database-administration/syntax.html</a
+      >.
+    </p>
+  </aside>
+  <figure class="table-block">
+    <figcaption>Table 11. User management privileges command syntax</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 60%" />
+        <col style="width: 40%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">Command</th>
+          <th class="halign-left valign-top">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] CREATE USER
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to create new users.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] RENAME USER
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to change the name of users.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] ALTER USER
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to modify users.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SET PASSWORD[S]
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to modify users' passwords and whether
+            those passwords must be changed upon first login.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SET AUTH
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to <code>SET</code> or
+            <code>REMOVE</code> users'
+            <a href="authentication-authorization/auth-providers.html"
+              >auth providers</a
+            >.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SET USER HOME DATABASE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to modify users' home database.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SET USER STATUS
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to modify the account status of users.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] DROP USER
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to delete users.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SHOW USER
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to list users.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] USER MANAGEMENT
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to create, delete, modify, and list
+            users.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+  <p>
+    The ability to add users can be granted via the
+    <code>CREATE USER</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT CREATE USER ON DBMS TO userAdder</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow adding users. List all
+    privileges for the role <code>userAdder</code> as commands by using this
+    query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE userAdder PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 12. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT CREATE USER ON DBMS TO <code>userAdder</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to rename users can be granted via the
+    <code>RENAME USER</code> privilege. The following query shows an example of
+    this:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT RENAME USER ON DBMS TO userNameModifier</code></pre>
+  </div>
+  <p>The resulting role has privileges that only allow renaming users:</p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE userNameModifier PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <p>Lists all privileges for role <code>userNameModifier</code>:</p>
+  <figure class="table-block">
+    <figcaption>Table 13. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT RENAME USER ON DBMS TO
+              <code>userNameModifier</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to modify users can be granted via the
+    <code>ALTER USER</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT ALTER USER ON DBMS TO userModifier</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow modifying users. List all
+    privileges for the role <code>userModifier</code> as commands by using the
+    following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE userModifier PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 14. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT ALTER USER ON DBMS TO <code>userModifier</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    A user that is granted the <code>ALTER USER</code> privilege is allowed to
+    run the <code>ALTER USER</code> administration command with one or several
+    of the <code>SET PASSWORD</code>,
+    <code>SET PASSWORD CHANGE [NOT] REQUIRED</code>, <code>SET AUTH</code>,
+    <code>REMOVE AUTH</code> and <code>SET STATUS</code> parts:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">ALTER USER jake SET PASSWORD 'verysecret' SET STATUS SUSPENDED</code></pre>
+  </div>
+  <p>
+    The ability to modify users' passwords and whether those passwords must be
+    changed upon first login can be granted via the
+    <code>SET PASSWORDS</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT SET PASSWORDS ON DBMS TO passwordModifier</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow modifying users' passwords
+    and whether those passwords must be changed upon first login. List all
+    privileges for the role <code>passwordModifier</code> as commands by using
+    the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE passwordModifier PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 15. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT SET PASSWORD ON DBMS TO
+              <code>passwordModifier</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    A user that is granted the <code>SET PASSWORDS</code> privilege is allowed
+    to run the <code>ALTER USER</code> administration command with one or both
+    of the <code>SET PASSWORD</code> and
+    <code>SET PASSWORD CHANGE [NOT] REQUIRED</code> parts:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">ALTER USER jake SET PASSWORD 'abcd5678' CHANGE NOT REQUIRED</code></pre>
+  </div>
+  <p>
+    A user that is granted the <code>SET AUTH</code> privilege is allowed to run
+    the <code>ALTER USER</code> administration command with one or both of the
+    <code>SET AUTH</code> and <code>REMOVE AUTH</code> parts:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">ALTER USER jake REMOVE AUTH 'native SET AUTH 'oidc-okta' { SET id 'jakesUniqueOktaUserId' }</code></pre>
+  </div>
+  <p>
+    The ability to modify the account status of users can be granted via the
+    <code>SET USER STATUS</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT SET USER STATUS ON DBMS TO statusModifier</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow modifying the account
+    status of users. List all privileges for the role
+    <code>statusModifier</code> as commands by using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE statusModifier PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 16. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT SET USER STATUS ON DBMS TO
+              <code>statusModifier</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    A user that is granted the <code>SET USER STATUS</code> privilege is allowed
+    to run the <code>ALTER USER</code> administration command with only the
+    <code>SET STATUS</code> part:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">ALTER USER jake SET STATUS ACTIVE</code></pre>
+  </div>
+  <p>
+    In order to be able to modify the home database of users, grant the
+    <code>SET USER HOME DATABASE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT SET USER HOME DATABASE ON DBMS TO statusModifier</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow modifying the home
+    database of users. List all privileges for the role
+    <code>statusModifier</code> as commands by using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE statusModifier PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 17. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT SET USER HOME DATABASE ON DBMS TO
+              <code>statusModifier</code>"</code
+            >
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT SET USER STATUS ON DBMS TO
+              <code>statusModifier</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 2</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    A user that is granted the <code>SET USER HOME DATABASE</code> privilege is
+    allowed to run the <code>ALTER USER</code> administration command with only
+    the <code>SET HOME DATABASE</code> or
+    <code>REMOVE HOME DATABASE</code> part:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">ALTER USER jake SET HOME DATABASE otherDb</code></pre>
+  </div>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">ALTER USER jake REMOVE HOME DATABASE</code></pre>
+  </div>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      Note that the combination of the <code>SET PASSWORDS</code>,
+      <code>SET AUTH</code>, <code>SET USER STATUS</code>, and the
+      <code>SET USER HOME DATABASE</code> privilege actions is equivalent to the
+      <code>ALTER USER</code> privilege action.
+    </p>
+  </aside>
+  <p>
+    The ability to delete users can be granted via the
+    <code>DROP USER</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT DROP USER ON DBMS TO userDropper</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow deleting users. List all
+    privileges for the role <code>userDropper</code> as commands by using the
+    following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE userDropper PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 18. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT DROP USER ON DBMS TO <code>userDropper</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to show users can be granted via the
+    <code>SHOW USER</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT SHOW USER ON DBMS TO userShower</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow showing users. List all
+    privileges for the role <code>userShower</code> as commands by using the
+    following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE userShower PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 19. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT SHOW USER ON DBMS TO <code>userShower</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The privileges to create, rename, modify, delete, and list users can be
+    granted via the <code>USER MANAGEMENT</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT USER MANAGEMENT ON DBMS TO userManager</code></pre>
+  </div>
+  <p>
+    The resulting role has all privileges to manage users. List all privileges
+    for the role <code>userManager</code> as commands by using the following
+    query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE userManager PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 20. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT SHOW USER ON DBMS TO <code>userManager</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-impersonation">
+    The DBMS <code>IMPERSONATE</code> privileges
+  </h2>
+  <p>
+    The DBMS privileges for impersonation can be assigned through Cypher
+    administrative commands. They can be granted, denied, and revoked like other
+    privileges.
+  </p>
+  <p>
+    Impersonation is the ability of a user to assume another user&#8217;s roles
+    (and therefore privileges), with the restriction of not being able to
+    execute updating <code>admin</code> commands as the impersonated user (i.e.
+    they would still be able to use <code>SHOW</code> commands).
+  </p>
+  <p>
+    The ability to impersonate users can be granted via the
+    <code>IMPERSONATE</code> privilege.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      For more details about the syntax descriptions, see
+      <a href="database-administration/syntax.html"
+        >database-administration/syntax.html</a
+      >.
+    </p>
+  </aside>
+  <figure class="table-block">
+    <figcaption>Table 21. Impersonation privileges command syntax</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 60%" />
+        <col style="width: 40%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">Command</th>
+          <th class="halign-left valign-top">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] IMPERSONATE [(*)]
+    ON DBMS
+    TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to impersonate any user.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] IMPERSONATE (user[, ...])
+    ON DBMS
+    TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to impersonate the specified users.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+  <p>
+    The following query shows an example of this. Note that
+    <code>userImpersonator</code> must be an existing role in order to make this
+    query work:
+  </p>
+  <figure class="listing-block noplay">
+    <figcaption>Query</figcaption>
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT IMPERSONATE (*) ON DBMS TO userImpersonator</code></pre>
+  </figure>
+  <p>The resulting role has privileges that allow impersonating all users:</p>
+  <figure class="listing-block noplay">
+    <figcaption>Query</figcaption>
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE userImpersonator PRIVILEGES AS COMMANDS</code></pre>
+  </figure>
+  <figure class="table-block">
+    <figcaption>Table 22. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT IMPERSONATE (*) ON DBMS TO
+              <code>userImpersonator</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    It is also possible to deny and revoke that privilege. See an example which
+    shows of how the <code>userImpersonator</code> user would be able to
+    impersonate all users, except <code>alice</code>:
+  </p>
+  <figure class="listing-block noplay">
+    <figcaption>Query</figcaption>
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">DENY IMPERSONATE (alice) ON DBMS TO userImpersonator</code></pre>
+  </figure>
+  <p>
+    To grant (or revoke) the permissions to impersonate a specific user or a
+    subset of users, you can first list them with this query:
+  </p>
+  <figure class="listing-block noplay">
+    <figcaption>Query</figcaption>
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT IMPERSONATE (alice, bob) ON DBMS TO userImpersonator</code></pre>
+  </figure>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-database-management">
+    The DBMS <code>DATABASE MANAGEMENT</code> privileges
+  </h2>
+  <p>
+    The DBMS privileges for database management can be assigned by using Cypher
+    administrative commands. They can be granted, denied and revoked like other
+    privileges.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      For more details about the syntax descriptions, see
+      <a href="database-administration/syntax.html"
+        >database-administration/syntax.html</a
+      >.
+    </p>
+  </aside>
+  <figure class="table-block">
+    <figcaption>
+      Table 23. Database management privileges command syntax
+    </figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 60%" />
+        <col style="width: 40%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">Command</th>
+          <th class="halign-left valign-top">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] CREATE DATABASE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to create new standard databases and
+            aliases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] DROP DATABASE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to delete standard databases and
+            aliases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] ALTER DATABASE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to modify standard databases and
+            aliases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SET DATABASE ACCESS
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to modify access to standard databases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT CREATE COMPOSITE DATABASE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to create new composite databases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT DROP COMPOSITE DATABASE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to delete composite databases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT COMPOSITE DATABASE MANAGEMENT
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to create and delete composite
+            databases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] DATABASE MANAGEMENT
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to create, delete, and modify databases
+            and aliases.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+  <p>
+    The ability to create standard databases and aliases can be granted via the
+    <code>CREATE DATABASE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT CREATE DATABASE ON DBMS TO databaseAdder</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow creating standard
+    databases and aliases. List all privileges for the role
+    <code>databaseAdder</code> as commands by using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE databaseAdder PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 24. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT CREATE DATABASE ON DBMS TO
+              <code>databaseAdder</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to create composite databases can be granted via the
+    <code>CREATE COMPOSITE DATABASE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT CREATE COMPOSITE DATABASE ON DBMS TO compositeDatabaseAdder</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow creating composite
+    databases. List all privileges for the role
+    <code>compositeDatabaseAdder</code> as commands by using the following
+    query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE compositeDatabaseAdder PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 25. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT CREATE COMPOSITE DATABASE ON DBMS TO
+              <code>compositeDatabaseAdder</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to delete standard databases and aliases can be granted via the
+    <code>DROP DATABASE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT DROP DATABASE ON DBMS TO databaseDropper</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow deleting standard
+    databases and aliases. List all privileges for the role
+    <code>databaseDropper</code> as commands by using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE databaseDropper PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 26. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT DROP DATABASE ON DBMS TO
+              <code>databaseDropper</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to delete composite databases can be granted via the
+    <code>DROP COMPOSITE DATABASE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT DROP COMPOSITE DATABASE ON DBMS TO compositeDatabaseDropper</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow deleting composite
+    databases. List all privileges for the role
+    <code>compositeDatabaseDropper</code> as commands by using the following
+    query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE compositeDatabaseDropper PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 27. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT DROP COMPOSITE DATABASE ON DBMS TO
+              <code>compositeDatabaseDropper</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to modify standard databases and aliases can be granted via the
+    <code>ALTER DATABASE</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT ALTER DATABASE ON DBMS TO databaseModifier</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow modifying standard
+    databases and aliases. List all privileges for the role
+    <code>databaseModifier</code> as commands by using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE databaseModifier PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 28. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT ALTER DATABASE ON DBMS TO
+              <code>databaseModifier</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to modify access to standard databases can be granted via the
+    <code>SET DATABASE ACCESS</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT SET DATABASE ACCESS ON DBMS TO accessModifier</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow modifying access to
+    standard databases. List all privileges for the role
+    <code>accessModifier</code> as commands by using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE accessModifier PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 29. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT SET DATABASE ACCESS ON DBMS TO
+              <code>accessModifier</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to create and delete composite databases can be granted via the
+    <code>COMPOSITE DATABASE MANAGEMENT</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT COMPOSITE DATABASE MANAGEMENT ON DBMS TO compositeDatabaseManager</code></pre>
+  </div>
+  <p>
+    The resulting role has all privileges to manage composite databases. List
+    all privileges for the role <code>compositeDatabaseManager</code> as
+    commands by using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE compositeDatabaseManager PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 30. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT COMPOSITE DATABASE MANAGEMENT ON DBMS TO
+              <code>compositeDatabaseManager</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to create, delete, and modify databases and aliases can be
+    granted via the <code>DATABASE MANAGEMENT</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT DATABASE MANAGEMENT ON DBMS TO databaseManager</code></pre>
+  </div>
+  <p>
+    The resulting role has all privileges to manage standard and composite
+    databases as well as aliases. List all privileges for the role
+    <code>databaseManager</code> as commands by using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE databaseManager PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 31. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT DATABASE MANAGEMENT ON DBMS TO
+              <code>databaseManager</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-alias-management">
+    The DBMS <code>ALIAS MANAGEMENT</code> privileges
+  </h2>
+  <p>
+    The DBMS privileges for alias management can be assigned by using Cypher
+    administrative commands and can be applied to both local and remote aliases.
+    They can be granted, denied and revoked like other privileges. It is also
+    possible to manage aliases with
+    <a href="#access-control-dbms-administration-database-management"
+      >database management commands</a
+    >.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      For more details about the syntax descriptions, see
+      <a href="database-administration/syntax.html"
+        >database-administration/syntax.html</a
+      >.
+    </p>
+  </aside>
+  <figure class="table-block">
+    <figcaption>
+      Table 32. Alias management privileges command syntax
+    </figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 60%" />
+        <col style="width: 40%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">Command</th>
+          <th class="halign-left valign-top">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] CREATE ALIAS
+ON DBMS
+TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to create new aliases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] DROP ALIAS
+ON DBMS
+TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to delete aliases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] ALTER ALIAS
+ON DBMS
+TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to modify aliases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SHOW ALIAS
+ON DBMS
+TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to list aliases.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] ALIAS MANAGEMENT
+ON DBMS
+TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to list, create, delete, and modify
+            aliases.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+  <p>
+    The ability to create aliases can be granted via the
+    <code>CREATE ALIAS</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT CREATE ALIAS ON DBMS TO aliasAdder</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow creating aliases. List all
+    privileges for the role <code>aliasAdder</code> as commands by using the
+    following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE aliasAdder PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 33. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT CREATE ALIAS ON DBMS TO <code>aliasAdder</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to delete aliases can be granted via the
+    <code>DROP ALIAS</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT DROP ALIAS ON DBMS TO aliasDropper</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow deleting aliases. See all
+    privileges for the role <code>aliasDropper</code> as commands by using the
+    following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE aliasDropper PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 34. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT DROP ALIAS ON DBMS TO <code>aliasDropper</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to modify aliases can be granted via the
+    <code>ALTER ALIAS</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT ALTER ALIAS ON DBMS TO aliasModifier</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow modifying aliases. List
+    all privileges for the role <code>aliasModifier</code> as commands by using
+    the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE aliasModifier PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 35. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT ALTER ALIAS ON DBMS TO <code>aliasModifier</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to list aliases can be granted via the
+    <code>SHOW ALIAS</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT SHOW ALIAS ON DBMS TO aliasLister</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow modifying aliases. List
+    all privileges for the role <code>aliasLister</code> as commands by using
+    the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE aliasLister PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 36. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code>"GRANT SHOW ALIAS ON DBMS TO <code>aliasLister</code>"</code>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The privileges to list, create, delete, and modify aliases can be granted
+    via the <code>ALIAS MANAGEMENT</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT ALIAS MANAGEMENT ON DBMS TO aliasManager</code></pre>
+  </div>
+  <p>
+    The resulting role has all privileges to manage aliases. List all privileges
+    for the role <code>aliasManager</code> as commands by using the following
+    query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE aliasManager PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 37. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT ALIAS MANAGEMENT ON DBMS TO
+              <code>aliasManager</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-server-management">
+    The DBMS <code>SERVER MANAGEMENT</code> privileges
+  </h2>
+  <p>
+    The DBMS privileges for server management can be assigned using Cypher
+    administrative commands. They can be granted, denied, and revoked like other
+    privileges.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      For more details about the syntax descriptions, see
+      <a href="database-administration/syntax.html"
+        >database-administration/syntax.html</a
+      >.
+    </p>
+  </aside>
+  <figure class="table-block">
+    <figcaption>
+      Table 38. Server management privileges command syntax
+    </figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 60%" />
+        <col style="width: 40%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">Command</th>
+          <th class="halign-left valign-top">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SERVER MANAGEMENT
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to show, enable, rename, alter,
+            reallocate, deallocate, and drop servers.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SHOW SERVERS
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to show servers.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-privilege-management">
+    The DBMS <code>PRIVILEGE MANAGEMENT</code> privileges
+  </h2>
+  <p>
+    The DBMS privileges for privilege management can be assigned by using Cypher
+    administrative commands. They can be granted, denied and revoked like other
+    privileges.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      For more details about the syntax descriptions, see
+      <a href="database-administration/syntax.html"
+        >database-administration/syntax.html</a
+      >.
+    </p>
+  </aside>
+  <figure class="table-block">
+    <figcaption>
+      Table 39. Privilege management privileges command syntax
+    </figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 60%" />
+        <col style="width: 40%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">Command</th>
+          <th class="halign-left valign-top">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SHOW PRIVILEGE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to list privileges.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] ASSIGN PRIVILEGE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to assign privileges using the
+            <code>GRANT</code> and <code>DENY</code> commands.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] REMOVE PRIVILEGE
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to remove privileges using the
+            <code>REVOKE</code> command.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] PRIVILEGE MANAGEMENT
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to list, assign, and remove privileges.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+  <p>
+    The ability to list privileges can be granted via the
+    <code>SHOW PRIVILEGE</code> privilege.
+  </p>
+  <p>
+    A user with this privilege is allowed to execute the
+    <code>SHOW PRIVILEGES</code> and
+    <code>SHOW ROLE roleName PRIVILEGES</code> administration commands. To
+    execute the <code>SHOW USER username PRIVILEGES</code> administration
+    command, both this privilege and the <code>SHOW USER</code> privilege are
+    required. The following query shows an example of how to grant the
+    <code>SHOW PRIVILEGE</code> privilege:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT SHOW PRIVILEGE ON DBMS TO privilegeShower</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow showing privileges. List
+    all privileges for the role <code>privilegeShower</code> as commands by
+    using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE privilegeShower PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 40. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT SHOW PRIVILEGE ON DBMS TO
+              <code>privilegeShower</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      Note that no specific privileges are required for showing the current
+      user&#8217;s privileges through the
+      <code>SHOW USER <em>username</em> PRIVILEGES</code> or
+      <code>SHOW USER PRIVILEGES</code> commands.
+    </p>
+    <p>
+      In addition, note that if a non-native auth provider like LDAP is in use,
+      <code>SHOW USER PRIVILEGES</code> will only work with a limited capacity
+      by making it only possible for a user to show their own privileges. Other
+      users' privileges cannot be listed when using a non-native auth provider.
+    </p>
+  </aside>
+  <p>
+    The ability to assign privileges to roles can be granted via the
+    <code>ASSIGN PRIVILEGE</code> privilege. A user with this privilege is
+    allowed to execute <code>GRANT</code> and <code>DENY</code> administration
+    commands. See an example of how to grant this privilege:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT ASSIGN PRIVILEGE ON DBMS TO privilegeAssigner</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow assigning privileges. List
+    all privileges for the role <code>privilegeAssigner</code> as commands by
+    using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE privilegeAssigner PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 41. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT ASSIGN PRIVILEGE ON DBMS TO
+              <code>privilegeAssigner</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The ability to remove privileges from roles can be granted via the
+    <code>REMOVE PRIVILEGE</code> privilege.
+  </p>
+  <p>
+    A user with this privilege is allowed to execute
+    <code>REVOKE</code> administration commands. See an example of how to grant
+    this privilege:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT REMOVE PRIVILEGE ON DBMS TO privilegeRemover</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that only allow removing privileges. List
+    all privileges for the role <code>privilegeRemover</code> as commands by
+    using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE privilegeRemover PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 42. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT REMOVE PRIVILEGE ON DBMS TO
+              <code>privilegeRemover</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    The privileges to list, assign, and remove privileges can be granted via the
+    <code>PRIVILEGE MANAGEMENT</code> privilege. See an example:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT PRIVILEGE MANAGEMENT ON DBMS TO privilegeManager</code></pre>
+  </div>
+  <p>
+    The resulting role has all privileges to manage privileges. List all
+    privileges for the role <code>privilegeManager</code> as commands by using
+    the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE privilegeManager PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 43. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT PRIVILEGE MANAGEMENT ON DBMS TO
+              <code>privilegeManager</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-execute">
+    The DBMS <code>EXECUTE</code> privileges
+  </h2>
+  <p>
+    The DBMS privileges for procedure and user-defined function execution can be
+    assigned by using Cypher administrative commands. They can be granted,
+    denied and revoked like other privileges.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      For more details about the syntax descriptions, see
+      <a href="database-administration/syntax.html"
+        >database-administration/syntax.html</a
+      >.
+    </p>
+  </aside>
+  <figure class="table-block">
+    <figcaption>Table 44. Execute privileges command syntax</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 60%" />
+        <col style="width: 40%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">Command</th>
+          <th class="halign-left valign-top">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] EXECUTE PROCEDURE[S] name-globbing[, ...]
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to execute the given procedures.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] EXECUTE BOOSTED PROCEDURE[S] name-globbing[, ...]
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to use elevated privileges when
+            executing the given procedures.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] EXECUTE ADMIN[ISTRATOR] PROCEDURES
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to execute procedures annotated with
+            <code>@Admin</code>. The procedures are executed with elevated
+            privileges.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] EXECUTE [USER [DEFINED]] FUNCTION[S] name-globbing[, ...]
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to execute the given user-defined
+            functions.
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] EXECUTE BOOSTED [USER [DEFINED]] FUNCTION[S] name-globbing[, ...]
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to use elevated privileges when
+            executing the given user-defined functions.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+  <section class="doc-section level-2">
+    <h3 id="access-control-execute-procedure">
+      The <code>EXECUTE PROCEDURE</code> privilege
+    </h3>
+    <p>
+      The ability to execute a procedure can be granted via the
+      <code>EXECUTE PROCEDURE</code> privilege. A role with this privilege is
+      allowed to execute the procedures matched by the
+      <a href="#access-control-name-globbing">name-globbing</a>. The following
+      query shows an example of how to grant this privilege:
+    </p>
+    <div class="listing-block noplay">
+      <pre
+        class="highlight"
+      ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE PROCEDURE db.schema.* ON DBMS TO procedureExecutor</code></pre>
+    </div>
+    <p>
+      Users with the role <code>procedureExecutor</code> can then run any
+      procedure in the <code>db.schema</code> namespace. The procedure is run
+      using the user&#8217;s own privileges.
+    </p>
+    <p>
+      The resulting role has privileges that only allow executing procedures in
+      the <code>db.schema</code> namespace. List all privileges for the role
+      <code>procedureExecutor</code> as commands by using the following query:
+    </p>
+    <div class="listing-block noplay">
+      <pre
+        class="highlight"
+      ><code class="language-cypher" data-lang="cypher">SHOW ROLE procedureExecutor PRIVILEGES AS COMMANDS</code></pre>
+    </div>
+    <figure class="table-block">
+      <figcaption>Table 45. Result</figcaption>
+      <table class="frame-all grid-all stretch">
+        <colgroup>
+          <col style="width: 100%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="halign-left valign-top">command</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="halign-left valign-top">
+              <code
+                >"GRANT EXECUTE PROCEDURE db.schema.* ON DBMS TO
+                <code>procedureExecutor</code>"</code
+              >
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="halign-left valign-top"><p>Rows: 1</p></td>
+          </tr>
+        </tfoot>
+      </table>
+    </figure>
+    <p>
+      In order to allow the execution of all but only a few procedures, you can
+      grant <code>EXECUTE PROCEDURES *</code> and deny the unwanted procedures.
+      For example, the following queries allow the execution of all procedures,
+      except those starting with <code>dbms.cluster</code>:
+    </p>
+    <div class="listing-block noplay">
+      <pre
+        class="highlight"
+      ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE PROCEDURE * ON DBMS TO deniedProcedureExecutor</code></pre>
+    </div>
+    <div class="listing-block noplay">
+      <pre
+        class="highlight"
+      ><code class="language-cypher" data-lang="cypher">DENY EXECUTE PROCEDURE dbms.cluster* ON DBMS TO deniedProcedureExecutor</code></pre>
+    </div>
+    <p>
+      The resulting role has privileges that only allow executing all procedures
+      except those starting with <code>dbms.cluster</code>. List all privileges
+      for the role <code>deniedProcedureExecutor</code> as commands by using the
+      following query:
+    </p>
+    <div class="listing-block noplay">
+      <pre
+        class="highlight"
+      ><code class="language-cypher" data-lang="cypher">SHOW ROLE deniedProcedureExecutor PRIVILEGES AS COMMANDS</code></pre>
+    </div>
+    <figure class="table-block">
+      <figcaption>Table 46. Result</figcaption>
+      <table class="frame-all grid-all stretch">
+        <colgroup>
+          <col style="width: 100%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="halign-left valign-top">command</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="halign-left valign-top">
+              <code
+                >"DENY EXECUTE PROCEDURE dbms.cluster* ON DBMS TO
+                <code>deniedProcedureExecutor</code>"</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td class="halign-left valign-top">
+              <code
+                >"GRANT EXECUTE PROCEDURE * ON DBMS TO
+                <code>deniedProcedureExecutor</code>"</code
+              >
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="halign-left valign-top"><p>Rows: 2</p></td>
+          </tr>
+        </tfoot>
+      </table>
+    </figure>
+    <p>
+      The <code>dbms.cluster.checkConnectivity</code>,
+      <code>dbms.cluster.cordonServer</code>,
+      <code>dbms.cluster.protocols</code>,
+      <code>dbms.cluster.readReplicaToggle</code>,
+      <code>dbms.cluster.routing.getRoutingTable</code>,
+      <code>dbms.cluster.secondaryReplicationDisable</code>,
+      <code>dbms.cluster.setAutomaticallyEnableFreeServers</code>, and
+      <code>dbms.cluster.uncordonServer</code> procedures are blocked, as well
+      as any others starting with <code>dbms.cluster</code>.
+    </p>
+  </section>
+  <section class="doc-section level-2">
+    <h3 id="access-control-execute-boosted-procedure">
+      The <code>EXECUTE BOOSTED PROCEDURE</code> privilege
+    </h3>
+    <p>
+      The ability to use elevated privileges when executing a procedure can be
+      granted via the <code>EXECUTE BOOSTED PROCEDURE</code> privilege. A user
+      with this privilege will not be restricted to their other privileges when
+      executing the procedures matched by the
+      <a href="#access-control-name-globbing">name-globbing</a>. The
+      <code>EXECUTE BOOSTED PROCEDURE</code> privilege only affects the
+      elevation, and not the execution of the procedure. Therefore, it is needed
+      to grant <code>EXECUTE PROCEDURE</code> privilege for the procedures as
+      well. Both <code>EXECUTE PROCEDURE</code> and
+      <code>EXECUTE BOOSTED PROCEDURE</code> are needed to execute a procedure
+      with elevated privileges.
+    </p>
+    <div class="listing-block noplay">
+      <pre
+        class="highlight"
+      ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE PROCEDURE * ON DBMS TO boostedProcedureExecutor;
+GRANT EXECUTE BOOSTED PROCEDURE db.labels, db.relationshipTypes ON DBMS TO boostedProcedureExecutor</code></pre>
+    </div>
+    <p>
+      Users with the role <code>boostedProcedureExecutor</code> can thus run the
+      <code>db.labels</code> and the
+      <code>db.relationshipTypes</code> procedures with full privileges, seeing
+      everything in the graph and not just the labels and types that the user
+      has <code>TRAVERSE</code> privilege on. Without the
+      <code>EXECUTE PROCEDURE</code>, no procedures could be executed at all.
+    </p>
+    <p>
+      The resulting role has privileges that allow executing the procedures
+      <code>db.labels</code> and <code>db.relationshipTypes</code> with elevated
+      privileges, and all other procedures with the user&#8217;s own privileges:
+    </p>
+    <div class="listing-block noplay">
+      <pre
+        class="highlight"
+      ><code class="language-cypher" data-lang="cypher">SHOW ROLE boostedProcedureExecutor PRIVILEGES AS COMMANDS</code></pre>
+    </div>
+    <figure class="table-block">
+      <figcaption>Table 47. Result</figcaption>
+      <table class="frame-all grid-all stretch">
+        <colgroup>
+          <col style="width: 100%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="halign-left valign-top">command</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="halign-left valign-top">
+              <code
+                >"GRANT EXECUTE PROCEDURE * ON DBMS TO
+                <code>boostedProcedureExecutor</code>"</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td class="halign-left valign-top">
+              <code
+                >"GRANT EXECUTE BOOSTED PROCEDURE db.labels ON DBMS TO
+                <code>boostedProcedureExecutor</code>"</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td class="halign-left valign-top">
+              <code
+                >"GRANT EXECUTE BOOSTED PROCEDURE db.relationshipTypes ON DBMS
+                TO <code>boostedProcedureExecutor</code>"</code
+              >
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="halign-left valign-top"><p>Rows: 3</p></td>
+          </tr>
+        </tfoot>
+      </table>
+    </figure>
+    <p>
+      As with grant, denying <code>EXECUTE BOOSTED PROCEDURE</code> on its own
+      only affects the elevation and not the execution of the procedure. This
+      can be seen in the following examples:
+    </p>
+    <figure class="example-block">
+      <figcaption>
+        Example 1. Grant <code>EXECUTE PROCEDURE</code> and deny
+        <code>EXECUTE BOOSTED PROCEDURE</code>
+      </figcaption>
+      <div class="example">
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE PROCEDURE * ON DBMS TO deniedBoostedProcedureExecutor1</code></pre>
+        </div>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">DENY EXECUTE BOOSTED PROCEDURE db.labels ON DBMS TO deniedBoostedProcedureExecutor1</code></pre>
+        </div>
+        <p>
+          The resulting role has privileges that allow the execution of all
+          procedures using the user&#8217;s own privileges. It also prevents the
+          <code>db.labels</code> procedure from being elevated. Still, the
+          denied <code>EXECUTE BOOSTED PROCEDURE</code> does not block execution
+          of <code>db.labels</code>.
+        </p>
+        <p>
+          To list all privileges for role
+          <code>deniedBoostedProcedureExecutor1</code> as commands, use the
+          following query:
+        </p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">SHOW ROLE deniedBoostedProcedureExecutor1 PRIVILEGES AS COMMANDS</code></pre>
+        </div>
+        <figure class="table-block">
+          <figcaption>Table 48. Result</figcaption>
+          <table class="frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 100%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="halign-left valign-top">command</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"DENY EXECUTE BOOSTED PROCEDURE db.labels ON DBMS TO
+                    <code>deniedBoostedProcedureExecutor1</code>"</code
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"GRANT EXECUTE PROCEDURE * ON DBMS TO
+                    <code>deniedBoostedProcedureExecutor1</code>"</code
+                  >
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td class="halign-left valign-top"><p>Rows: 2</p></td>
+              </tr>
+            </tfoot>
+          </table>
+        </figure>
+      </div>
+    </figure>
+    <figure class="example-block">
+      <figcaption>
+        Example 2. Grant <code>EXECUTE BOOSTED PROCEDURE</code> and deny
+        <code>EXECUTE PROCEDURE</code>
+      </figcaption>
+      <div class="example">
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE BOOSTED PROCEDURE * ON DBMS TO deniedBoostedProcedureExecutor2</code></pre>
+        </div>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">DENY EXECUTE PROCEDURE db.labels ON DBMS TO deniedBoostedProcedureExecutor2</code></pre>
+        </div>
+        <p>
+          The resulting role has privileges that allow elevating the privileges
+          for all procedures, but cannot execute any due to missing or denied
+          <code>EXECUTE PROCEDURE</code> privileges. List all privileges for the
+          role <code>deniedBoostedProcedureExecutor2</code> as commands by using
+          the following query:
+        </p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">SHOW ROLE deniedBoostedProcedureExecutor2 PRIVILEGES AS COMMANDS</code></pre>
+        </div>
+        <figure class="table-block">
+          <figcaption>Table 49. Result</figcaption>
+          <table class="frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 100%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="halign-left valign-top">command</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"DENY EXECUTE PROCEDURE db.labels ON DBMS TO
+                    <code>deniedBoostedProcedureExecutor2</code>"</code
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"GRANT EXECUTE BOOSTED PROCEDURE * ON DBMS TO
+                    <code>deniedBoostedProcedureExecutor2</code>"</code
+                  >
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td class="halign-left valign-top"><p>Rows: 2</p></td>
+              </tr>
+            </tfoot>
+          </table>
+        </figure>
+      </div>
+    </figure>
+    <figure class="example-block">
+      <figcaption>
+        Example 3. Grant <code>EXECUTE BOOSTED PROCEDURE</code> and deny
+        <code>EXECUTE BOOSTED PROCEDURE</code>
+      </figcaption>
+      <div class="example">
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE BOOSTED PROCEDURE * ON DBMS TO deniedBoostedProcedureExecutor3</code></pre>
+        </div>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">DENY EXECUTE BOOSTED PROCEDURE db.labels ON DBMS TO deniedBoostedProcedureExecutor3</code></pre>
+        </div>
+        <p>
+          The resulting role has privileges that allow elevating the privileges
+          for all procedures except <code>db.labels</code>, however no
+          procedures can be executed due to missing
+          <code>EXECUTE PROCEDURE</code> privilege. List all privileges for the
+          role <code>deniedBoostedProcedureExecutor3</code> as commands by using
+          the following query:
+        </p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">SHOW ROLE deniedBoostedProcedureExecutor3 PRIVILEGES AS COMMANDS</code></pre>
+        </div>
+        <figure class="table-block">
+          <figcaption>Table 50. Result</figcaption>
+          <table class="frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 100%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="halign-left valign-top">command</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"DENY EXECUTE BOOSTED PROCEDURE db.labels ON DBMS TO
+                    <code>deniedBoostedProcedureExecutor3</code>"</code
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"GRANT EXECUTE BOOSTED PROCEDURE * ON DBMS TO
+                    <code>deniedBoostedProcedureExecutor3</code>"</code
+                  >
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td class="halign-left valign-top"><p>Rows: 2</p></td>
+              </tr>
+            </tfoot>
+          </table>
+        </figure>
+      </div>
+    </figure>
+    <figure class="example-block">
+      <figcaption>
+        Example 4. How would the privileges from examples 1 to 3 affect the
+        output of a procedure?
+      </figcaption>
+      <div class="example">
+        <p>Assume there is a procedure called <code>myProc</code>.</p>
+        <p>
+          This procedure gives the result <code>A</code> and <code>B</code> for
+          a user with <code>EXECUTE PROCEDURE</code> privilege and
+          <code>A</code>, <code>B</code> and <code>C</code> for a user with
+          <code>EXECUTE BOOSTED PROCEDURE</code> privilege.
+        </p>
+        <p>
+          Now, adapt the privileges from examples 1 to 3 to be applied to this
+          procedure and show what is returned. With the privileges from example
+          1, granted <code>EXECUTE PROCEDURE *</code> and denied
+          <code>EXECUTE BOOSTED PROCEDURE myProc</code>, the
+          <code>myProc</code> procedure returns the result <code>A</code> and
+          <code>B</code>.
+        </p>
+        <p>
+          With the privileges from example 2, granted
+          <code>EXECUTE BOOSTED PROCEDURE *</code> and denied
+          <code>EXECUTE PROCEDURE myProc</code>, execution of the
+          <code>myProc</code> procedure is not allowed.
+        </p>
+        <p>
+          With the privileges from example 3, granted
+          <code>EXECUTE BOOSTED PROCEDURE *</code> and denied
+          <code>EXECUTE BOOSTED PROCEDURE myProc</code>, execution of the
+          <code>myProc</code> procedure is not allowed.
+        </p>
+        <p>For comparison, when granted:</p>
+        <div class="ulist">
+          <ul>
+            <li>
+              <code>EXECUTE PROCEDURE myProc</code>: the
+              <code>myProc</code> procedure returns the result
+              <code>A</code> and <code>B</code>.
+            </li>
+            <li>
+              <code>EXECUTE BOOSTED PROCEDURE myProc</code>: execution of the
+              <code>myProc</code> procedure is not allowed.
+            </li>
+            <li>
+              <code>EXECUTE PROCEDURE myProc</code> and
+              <code>EXECUTE BOOSTED PROCEDURE myProc</code>: the
+              <code>myProc</code> procedure returns the result <code>A</code>,
+              <code>B</code>, and <code>C</code>.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </figure>
+  </section>
+  <section class="doc-section level-2">
+    <h3 id="access-control-admin-procedure">
+      The <code>EXECUTE ADMIN PROCEDURE</code> privilege
+    </h3>
+    <p>
+      The ability to execute admin procedures (annotated with
+      <code>@Admin</code>) can be granted via the
+      <code>EXECUTE ADMIN PROCEDURES</code> privilege. This privilege is
+      equivalent with granting the
+      <a href="#access-control-execute-procedure"
+        ><code>EXECUTE PROCEDURE</code></a
+      >
+      and
+      <a href="#access-control-execute-boosted-procedure"
+        ><code>EXECUTE BOOSTED PROCEDURE</code></a
+      >
+      privileges on each of the admin procedures. Any newly added
+      <code>admin</code> procedure is automatically included in this privilege.
+      The following query shows an example of how to grant this privilege:
+    </p>
+    <div class="listing-block noplay">
+      <pre
+        class="highlight"
+      ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE ADMIN PROCEDURES ON DBMS TO adminProcedureExecutor</code></pre>
+    </div>
+    <p>
+      Users with the role <code>adminProcedureExecutor</code> can then run any
+      <code>admin</code> procedure with elevated privileges. The resulting role
+      has privileges that allow the execution of all admin procedures.
+    </p>
+    <p>
+      List all privileges for the role <code>adminProcedureExecutor</code> as
+      commands by using the following query:
+    </p>
+    <div class="listing-block noplay">
+      <pre
+        class="highlight"
+      ><code class="language-cypher" data-lang="cypher">SHOW ROLE adminProcedureExecutor PRIVILEGES AS COMMANDS</code></pre>
+    </div>
+    <figure class="table-block">
+      <figcaption>Table 51. Result</figcaption>
+      <table class="frame-all grid-all stretch">
+        <colgroup>
+          <col style="width: 100%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="halign-left valign-top">command</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="halign-left valign-top">
+              <code
+                >"GRANT EXECUTE ADMIN PROCEDURES ON DBMS TO
+                <code>adminProcedureExecutor</code>"</code
+              >
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="halign-left valign-top"><p>Rows: 1</p></td>
+          </tr>
+        </tfoot>
+      </table>
+    </figure>
+    <p>
+      In order to compare this with the <code>EXECUTE PROCEDURE</code> and
+      <code>EXECUTE BOOSTED PROCEDURE</code> privileges, revisit the
+      <code>myProc</code> procedure, but this time as an
+      <code>admin</code> procedure, which will give the result <code>A</code>,
+      <code>B</code> and <code>C</code> when allowed to execute.
+    </p>
+    <p>
+      By starting with a user only granted the
+      <code>EXECUTE PROCEDURE myProc</code> or the
+      <code>EXECUTE BOOSTED PROCEDURE myProc</code> privilege, execution of the
+      <code>myProc</code> procedure is not allowed.
+    </p>
+    <p>
+      However, for a user granted the <code>EXECUTE ADMIN PROCEDURES</code> or
+      both <code>EXECUTE PROCEDURE myProc</code> and
+      <code>EXECUTE BOOSTED PROCEDURE myProc</code>, the
+      <code>myProc</code> procedure returns the result <code>A</code>,
+      <code>B</code> and <code>C</code>.
+    </p>
+    <p>
+      Any denied <code>EXECUTE</code> privilege results in the procedure not
+      being allowed to be executed. In this case, it does not matter whether
+      <code>EXECUTE PROCEDURE</code>, <code>EXECUTE BOOSTED PROCEDURE</code> or
+      <code>EXECUTE ADMIN PROCEDURES</code> is being denied.
+    </p>
+  </section>
+  <section class="doc-section level-2">
+    <h3 id="access-control-execute-user-defined-function">
+      The <code>EXECUTE USER DEFINED FUNCTION</code> privilege
+    </h3>
+    <p>
+      The ability to execute a user-defined function (UDF) can be granted via
+      the <code>EXECUTE USER DEFINED FUNCTION</code> privilege. A role with this
+      privilege is allowed to execute the UDFs matched by the
+      <a href="#access-control-name-globbing">name-globbing</a>.
+    </p>
+    <section class="admonition-block important" role="doc-notice">
+      <h6 class="block-title label-only">
+        <span class="title-label">Important: </span>
+      </h6>
+      <p>
+        The <code>EXECUTE USER DEFINED FUNCTION</code> privilege does not apply
+        to built-in functions, which are always executable.
+      </p>
+    </section>
+    <figure class="example-block">
+      <figcaption>Example 5. Execute user-defined function</figcaption>
+      <div class="example">
+        <p>
+          The following query shows an example of how to grant this privilege:
+        </p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE USER DEFINED FUNCTION apoc.coll.* ON DBMS TO functionExecutor</code></pre>
+        </div>
+        <p>Or in short form:</p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE FUNCTION apoc.coll.* ON DBMS TO functionExecutor</code></pre>
+        </div>
+        <p>
+          Users with the role <code>functionExecutor</code> can thus run any UDF
+          in the <code>apoc.coll</code> namespace. The function here is run
+          using the user&#8217;s own privileges.
+        </p>
+        <p>
+          The resulting role has privileges that only allow executing UDFs in
+          the <code>apoc.coll</code> namespace. List all privileges for the role
+          <code>functionExecutor</code> as commands by using the following
+          query:
+        </p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">SHOW ROLE functionExecutor PRIVILEGES AS COMMANDS</code></pre>
+        </div>
+        <figure class="table-block">
+          <figcaption>Table 52. Result</figcaption>
+          <table class="frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 100%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="halign-left valign-top">command</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"GRANT EXECUTE FUNCTION apoc.coll.* ON DBMS TO
+                    <code>functionExecutor</code>"</code
+                  >
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td class="halign-left valign-top"><p>Rows: 1</p></td>
+              </tr>
+            </tfoot>
+          </table>
+        </figure>
+      </div>
+    </figure>
+    <p>
+      To allow the execution of all but a few UDFs, you can grant
+      <code>EXECUTE USER DEFINED FUNCTIONS *</code> and deny the unwanted
+      functions.
+    </p>
+    <figure class="example-block">
+      <figcaption>Example 6. Execute user-defined functions</figcaption>
+      <div class="example">
+        <p>
+          The following queries allow the execution of all UDFs except those
+          starting with <code>apoc.any.prop</code>:
+        </p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE USER DEFINED FUNCTIONS * ON DBMS TO deniedFunctionExecutor</code></pre>
+        </div>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">DENY EXECUTE USER DEFINED FUNCTION apoc.any.prop* ON DBMS TO deniedFunctionExecutor</code></pre>
+        </div>
+        <p>Or in short form:</p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE FUNCTIONS * ON DBMS TO deniedFunctionExecutor</code></pre>
+        </div>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">DENY EXECUTE FUNCTION apoc.any.prop* ON DBMS TO deniedFunctionExecutor</code></pre>
+        </div>
+        <p>
+          The resulting role has privileges that only allow the execution of all
+          procedures except those starting with <code>apoc.any.prop</code>. List
+          all privileges for the role <code>deniedFunctionExecutor</code> as
+          commands by using the following query:
+        </p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">SHOW ROLE deniedFunctionExecutor PRIVILEGES AS COMMANDS</code></pre>
+        </div>
+        <figure class="table-block">
+          <figcaption>Table 53. Result</figcaption>
+          <table class="frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 100%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="halign-left valign-top">command</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"DENY EXECUTE FUNCTION apoc.any.prop* ON DBMS TO
+                    <code>deniedFunctionExecutor</code>"</code
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"GRANT EXECUTE FUNCTION * ON DBMS TO
+                    <code>deniedFunctionExecutor</code>"</code
+                  >
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td class="halign-left valign-top"><p>Rows: 2</p></td>
+              </tr>
+            </tfoot>
+          </table>
+        </figure>
+        <p>
+          The <code>apoc.any.property</code> and
+          <code>apoc.any.properties</code> are blocked, as well as any other
+          procedures starting with <code>apoc.any.prop</code>.
+        </p>
+      </div>
+    </figure>
+  </section>
+  <section class="doc-section level-2">
+    <h3 id="access-control-execute-boosted-user-defined-function">
+      The <code>EXECUTE BOOSTED USER DEFINED FUNCTION</code> privilege
+    </h3>
+    <p>
+      The ability to use elevated privileges when executing a user-defined
+      function (UDF) can be granted via the
+      <code>EXECUTE BOOSTED USER DEFINED FUNCTION</code> privilege. A user with
+      this privilege will not be restricted to their other privileges when
+      executing the UDFs matched by the
+      <a href="#access-control-name-globbing">name-globbing</a>. The
+      <code>EXECUTE BOOSTED USER DEFINED FUNCTION</code> privilege only affects
+      the elevation and not the execution of the function. Therefore, it is
+      needed to grant <code>EXECUTE USER DEFINED FUNCTION</code> privilege for
+      the functions as well. Both <code>EXECUTE USER DEFINED FUNCTION</code> and
+      <code>EXECUTE BOOSTED USER DEFINED FUNCTION</code> are needed to execute a
+      function with elevated privileges.
+    </p>
+    <section class="admonition-block important" role="doc-notice">
+      <h6 class="block-title label-only">
+        <span class="title-label">Important: </span>
+      </h6>
+      <p>
+        The <code>EXECUTE BOOSTED USER DEFINED FUNCTION</code> privilege does
+        not apply to built-in functions, as they have no concept of elevated
+        privileges.
+      </p>
+    </section>
+    <figure class="example-block">
+      <figcaption>Example 7. Execute boosted user-defined function</figcaption>
+      <div class="example">
+        <p>
+          The following query shows an example of how to grant the
+          <code>EXECUTE BOOSTED USER DEFINED FUNCTION</code> privilege:
+        </p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE USER DEFINED FUNCTION * ON DBMS TO boostedFunctionExecutor
+GRANT EXECUTE BOOSTED USER DEFINED FUNCTION apoc.any.properties ON DBMS TO boostedFunctionExecutor</code></pre>
+        </div>
+        <p>Or in short form:</p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE FUNCTION * ON DBMS TO boostedFunctionExecutor
+GRANT EXECUTE BOOSTED FUNCTION apoc.any.properties ON DBMS TO boostedFunctionExecutor</code></pre>
+        </div>
+        <p>
+          Users with the role <code>boostedFunctionExecutor</code> can thus run
+          <code>apoc.any.properties</code> with full privileges and see every
+          property on the node/relationship, not just the properties that the
+          user has <code>READ</code> privilege on. Without the
+          <code>EXECUTE USER DEFINED FUNCTION</code> no UDFs could be executed
+          at all.
+        </p>
+        <p>
+          The resulting role has privileges that allow executing the UDF
+          <code>apoc.any.properties</code> with elevated privileges, and all
+          other UDFs with the users' own privileges. List all privileges for the
+          role <code>boostedFunctionExecutor</code> as commands by using the
+          following query:
+        </p>
+        <div class="listing-block noplay">
+          <pre
+            class="highlight"
+          ><code class="language-cypher" data-lang="cypher">SHOW ROLE boostedFunctionExecutor PRIVILEGES AS COMMANDS</code></pre>
+        </div>
+        <figure class="table-block">
+          <figcaption>Table 54. Result</figcaption>
+          <table class="frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 100%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="halign-left valign-top">command</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"GRANT EXECUTE FUNCTION * ON DBMS TO
+                    <code>boostedFunctionExecutor</code>"</code
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td class="halign-left valign-top">
+                  <code
+                    >"GRANT EXECUTE BOOSTED FUNCTION apoc.any.properties ON DBMS
+                    TO <code>boostedFunctionExecutor</code>"</code
+                  >
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td class="halign-left valign-top"><p>Rows: 2</p></td>
+              </tr>
+            </tfoot>
+          </table>
+        </figure>
+      </div>
+    </figure>
+  </section>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-setting">
+    The DBMS <code>SETTING</code> privileges
+  </h2>
+  <p>
+    The ability to show configuration settings can be granted via the
+    <code>SHOW SETTING</code> privilege. A role with this privilege is allowed
+    to query the configuration settings matched by the
+    <a href="#access-control-name-globbing">name-globbing</a>.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      For more details about the syntax descriptions, see
+      <a href="database-administration/syntax.html"
+        >database-administration/syntax.html</a
+      >.
+    </p>
+  </aside>
+  <figure class="table-block">
+    <figcaption>Table 55. Setting privileges command syntax</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 60%" />
+        <col style="width: 40%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">Command</th>
+          <th class="halign-left valign-top">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <div class="listing-block noheader">
+              <pre
+                class="highlight"
+              ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] SHOW SETTING[S] name-globbing[, ...]
+  ON DBMS
+  TO role[, ...]</code></pre>
+            </div>
+          </td>
+          <td class="halign-left valign-top">
+            Enables the specified roles to query given configuration settings.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+  <p>The following query shows an example of how to grant this privilege:</p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT SHOW SETTING server.bolt.* ON DBMS TO configurationViewer</code></pre>
+  </div>
+  <p>
+    Users with the role <code>configurationViewer</code> can then query any
+    setting in the <code>server.bolt</code> namespace.
+  </p>
+  <p>
+    The updated role <code>configurationViewer</code> has privileges that only
+    allow querying settings in the <code>server.bolt</code> namespace. List all
+    privileges for the role <code>configurationViewer</code> as commands by
+    using the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE configurationViewer PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 56. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT SHOW SETTING server.bolt.* ON DBMS TO
+              <code>configurationViewer</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    To deny a specific setting from a role, first grant
+    <code>SHOW SETTINGS *</code>, and then deny the unwanted setting. For
+    example, the following queries allow the querying of all settings, except
+    those starting with <code>dbms.security</code>:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT SHOW SETTINGS * ON DBMS TO deniedConfigurationViewer</code></pre>
+  </div>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">DENY SHOW SETTING dbms.security* ON DBMS TO deniedConfigurationViewer</code></pre>
+  </div>
+  <p>
+    The resulting role has privileges that allow querying all settings except
+    those starting with <code>dbms.security</code>. List all privileges for the
+    role <code>deniedConfigurationViewer</code> as commands by using the
+    following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE deniedConfigurationViewer PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 57. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"DENY SHOW SETTING dbms.security* ON DBMS TO
+              <code>deniedConfigurationViewer</code>"</code
+            >
+          </td>
+        </tr>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT SHOW SETTING * ON DBMS TO
+              <code>deniedConfigurationViewer</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 2</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+  <p>
+    As the query result shows, access to any setting starting with
+    <code>dbms.security</code> are blocked, but the rest can still be queried.
+  </p>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-dbms-administration-all">
+    Granting <code>ALL DBMS PRIVILEGES</code>
+  </h2>
+  <p>
+    The right to perform the following privileges can be achieved with a single
+    command:
+  </p>
+  <div class="ulist">
+    <ul>
+      <li>Create, drop, assign, remove, and show roles.</li>
+      <li>Create, alter, drop, show, and impersonate users.</li>
+      <li>Create, alter, and drop databases and aliases.</li>
+      <li>Enable, alter, rename, reallocate, deallocate, and drop servers</li>
+      <li>Show, assign, and remove privileges.</li>
+      <li>Execute all procedures with elevated privileges.</li>
+      <li>Execute all user-defined functions with elevated privileges.</li>
+      <li>Show all configuration settings.</li>
+    </ul>
+  </div>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      For more details about the syntax descriptions, see
+      <a href="database-administration/syntax.html"
+        >database-administration/syntax.html</a
+      >.
+    </p>
+  </aside>
+  <div class="listing-block noheader">
+    <pre
+      class="highlight"
+    ><code class="language-syntax" data-lang="syntax">GRANT [IMMUTABLE] ALL [[DBMS] PRIVILEGES]
+    ON DBMS
+    TO role[, ...]</code></pre>
+  </div>
+  <p>
+    For example, to grant the role <code>dbmsManager</code> the abilities above,
+    use the following query:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT ALL DBMS PRIVILEGES ON DBMS TO dbmsManager</code></pre>
+  </div>
+  <p>
+    The privileges granted can be seen using the
+    <code>SHOW PRIVILEGES</code> command:
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">SHOW ROLE dbmsManager PRIVILEGES AS COMMANDS</code></pre>
+  </div>
+  <figure class="table-block">
+    <figcaption>Table 58. Result</figcaption>
+    <table class="frame-all grid-all stretch">
+      <colgroup>
+        <col style="width: 100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="halign-left valign-top">command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="halign-left valign-top">
+            <code
+              >"GRANT ALL DBMS PRIVILEGES ON DBMS TO
+              <code>dbmsManager</code>"</code
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="halign-left valign-top"><p>Rows: 1</p></td>
+        </tr>
+      </tfoot>
+    </table>
+  </figure>
+</section>
+<section class="doc-section level-1">
+  <h2 id="access-control-name-globbing">
+    Name-globbing for procedures, user-defined functions, and settings
+  </h2>
+  <p>
+    The name-globbing for procedures, user-defined functions, and setting names
+    is a simplified version of globbing for filename expansions. It only allows
+    two wildcard characters: <code>*</code> and <code>?</code>, which are used
+    for multiple and single-character matches. In this case,
+    <code>*</code> means 0 or more characters, and <code>?</code> matches
+    exactly one character.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      The name-globbing is subject to the
+      <a
+        href="{neo4j-docs-base-uri}/cypher-manual/{page-version}/syntax/naming/"
+        >Cypher Manual &#8594; Naming rules and recommendations</a
+      >, with the exception that it may include dots, stars, and question marks
+      without the need for escaping using backticks.
+    </p>
+    <p>
+      Each part of the name-globbing separated by dots may be individually
+      quoted. For example, <code>mine.`procedureWith%`</code> is allowed, but
+      not <code>mine.procedure`With%`</code>. Also, note that wildcard
+      characters behave as wildcards even when quoted. For example, using
+      <code>`*`</code> is equivalent to using <code>*</code>, and thus allows
+      executing all functions or procedures and not only the procedure or
+      function named <code>*</code>.
+    </p>
+  </aside>
+  <p>Given the following list of procedures:</p>
+  <div class="ulist">
+    <ul>
+      <li><code>mine.public.exampleProcedure</code></li>
+      <li><code>mine.public.exampleProcedure1</code></li>
+      <li><code>mine.public.exampleProcedure2</code></li>
+      <li><code>mine.public.with#Special§Characters</code></li>
+      <li><code>mine.private.exampleProcedure</code></li>
+      <li><code>mine.private.exampleProcedure1</code></li>
+      <li><code>mine.private.exampleProcedure2</code></li>
+      <li><code>mine.private.with#Special§Characters</code></li>
+      <li><code>your.exampleProcedure</code></li>
+    </ul>
+  </div>
+  <p>
+    The following examples demonstrate how name-globbing patterns can be used in
+    controlling access to procedures. Note that the same rules apply to
+    user-defined functions and settings.
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE PROCEDURE * ON DBMS TO globbing1</code></pre>
+  </div>
+  <p>Users with the role <code>globbing1</code> can run all the procedures.</p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE PROCEDURE mine.*.exampleProcedure ON DBMS TO globbing2</code></pre>
+  </div>
+  <p>
+    Users with the role <code>globbing2</code> can run procedures
+    <code>mine.public.exampleProcedure</code> and
+    <code>mine.private.exampleProcedure</code>, but no other procedures.
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE PROCEDURE mine.*.exampleProcedure? ON DBMS TO globbing3</code></pre>
+  </div>
+  <p>
+    Users with the role <code>globbing3</code> can run procedures
+    <code>mine.public.exampleProcedure1</code>,
+    <code>mine.private.exampleProcedure1</code>, and
+    <code>mine.private.exampleProcedure2</code>, but no other procedures.
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE PROCEDURE *.exampleProcedure ON DBMS TO globbing4</code></pre>
+  </div>
+  <p>
+    Users with the role <code>globbing4</code> can run procedures
+    <code>your.exampleProcedure</code>,
+    <code>mine.public.exampleProcedure</code>, and
+    <code>mine.private.exampleProcedure</code>, but no other procedures.
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE PROCEDURE mine.public.exampleProcedure* ON DBMS TO globbing5</code></pre>
+  </div>
+  <p>
+    Users with the role <code>globbing5</code> can run procedures
+    <code>mine.public.exampleProcedure</code>,
+    <code>mine.public.exampleProcedure1</code> and
+    <code>mine.public.exampleProcedure42</code>, but no other procedures.
+  </p>
+  <div class="listing-block noplay">
+    <pre
+      class="highlight"
+    ><code class="language-cypher" data-lang="cypher">GRANT EXECUTE PROCEDURE `mine.public.with#*§Characters`, mine.private.`with#Spec???§Characters` ON DBMS TO globbing6</code></pre>
+  </div>
+  <p>
+    Users with the role <code>globbing6</code> can run procedures
+    <code>mine.public.with#Special§Characters</code>, and
+    <code>mine.private.with#Special§Characters</code>, but no other procedures.
+  </p>
+  <aside class="admonition-block note" role="note">
+    <h6 class="block-title label-only">
+      <span class="title-label">Note: </span>
+    </h6>
+    <p>
+      The name-globbing may be fully or partially quoted. Both
+      <code>*</code> and <code>?</code> are interpreted as wildcards in both
+      cases.
+    </p>
+  </aside>
+</section>

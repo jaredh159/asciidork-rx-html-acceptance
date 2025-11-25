@@ -11,6 +11,7 @@ const { execSync } = require(`node:child_process`);
  * @param {boolean} verbose - Whether to output verbose messages.
  */
 function processAdocFiles(dir, bin, verbose) {
+  const backends = [`dr-html`, `html5`];
   const entries = fs.readdirSync(dir, { withFileTypes: true });
 
   for (const entry of entries) {
@@ -19,20 +20,27 @@ function processAdocFiles(dir, bin, verbose) {
       processAdocFiles(fullpath, bin, verbose);
     } else if (entry.isFile() && entry.name.endsWith(`.adoc`)) {
       const adocPath = fullpath;
-      const htmlPath = fullpath.replace(/input\.adoc$/, `output.html`);
 
-      if (verbose) {
-        process.stdout.write(`Checking ${fullpath}...\n`);
-      }
-      try {
-        // test w/ windows line endings
-        // execSync(`/usr/bin/perl -i -pe 's/\\n/\\r\\n/' ${adocPath}`);
-        const html = execSync(`${bin} -i ${adocPath} -s unsafe -e`, {
-          encoding: `utf8`,
-        });
-        fs.writeFileSync(htmlPath, html, { encoding: `utf8` });
-      } catch (err) {
-        process.stderr.write(`Failed to process ${fullpath}: ${err.message}\n`);
+      for (const backend of backends) {
+        const htmlPath = fullpath.replace(
+          /input\.adoc$/,
+          `output.${backend}.html`
+        );
+
+        if (verbose) {
+          process.stdout.write(`Checking ${fullpath} [${backend}]...\n`);
+        }
+        try {
+          const html = execSync(
+            `${bin} -i ${adocPath} -s unsafe -e -f ${backend}`,
+            { encoding: `utf8` }
+          );
+          fs.writeFileSync(htmlPath, html, { encoding: `utf8` });
+        } catch (err) {
+          process.stderr.write(
+            `Failed to process ${fullpath} [${backend}]: ${err.message}\n`
+          );
+        }
       }
     }
   }

@@ -1,0 +1,16 @@
+// https://docs.asciidoctor.org/asciidoc/latest/attributes/unresolved-references/#missing
+:attribute-missing: skip
+
+Hello, {name}!
+
+:attribute-missing: drop
+
+Hello, {name}!
+
+:attribute-missing: drop-line
+
+Hello, {name}!
+
+:attribute-missing: warn
+
+Hello, {name}!

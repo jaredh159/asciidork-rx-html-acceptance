@@ -1,0 +1,29 @@
+// https://docs.asciidoctor.org/asciidoc/latest/attributes/positional-and-named-attributes/
+image::sunset.jpg[Sunset,300,400]
+
+image::sunset.jpg[alt=Sunset,width=300,height=400]
+
+[#custom-id]
+== Section with Custom ID
+
+[#rules.prominent%incremental]
+* Work hard
+* Play hard
+* Be happy
+
+[%header%footer%autowidth]
+|===
+|Header A |Header B
+|Footer A |Footer B
+|===
+
+[#free-world.goals]#free the world#
+[#free-world.goals]*free the world*
+[#free-world.goals]_free the world_
+[#free-world.goals]`free the world`
+[#free-world.goals]`+free the world+`
+[#free-world.goals]~freetheworld~
+[#free-world.goals]^freetheworld^
+[#free-world.goals]~free the world~
+[#free-world.goals]^free the world^
+[#free-world.goals]free the world

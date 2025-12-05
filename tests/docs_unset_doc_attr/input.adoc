@@ -1,0 +1,13 @@
+// https://docs.asciidoctor.org/asciidoc/latest/attributes/unset-attributes/#unset-a-document-attribute-in-the-body
+= Title
+:sectnums:
+
+== Section Title
+
+:!sectnums:
+== Section Title
+
+=== Section Title
+
+:sectnums:
+== Section Title

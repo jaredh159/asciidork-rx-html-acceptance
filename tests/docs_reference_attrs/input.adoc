@@ -1,0 +1,20 @@
+// https://docs.asciidoctor.org/asciidoc/latest/attributes/reference-attributes/
+= Ops Manual
+:disclaimer: Don't pet the wild Wolpertingers. We're not responsible for any loss of hair, chocolate, or purple socks.
+:url-repo: https://github.com/asciidoctor/asciidoctor
+
+WARNING: {disclaimer} 
+If you're missing a lime colored sock, file a ticket in
+the {url-repo}/issues[Asciidoctor issue tracker]. 
+(Actually, please don't).
+
+TIP: Wolpertingers don't like temperatures above 100{deg}C.
+Our servers don't like them either.
+
+:id: ops-manual
+
+// escaped, should not be interpreted as a attr ref
+
+In the path /items/\{id}, id is a path parameter.
+
+In the path +/items/{id}+, id is a path parameter.

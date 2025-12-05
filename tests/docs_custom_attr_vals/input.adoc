@@ -1,0 +1,7 @@
+:disclaimer: Don't pet the wild Wolpertingers. If you let them into your system, we're \
+not responsible for any loss of hair, chocolate, or purple socks.
+:url-repo: https://github.com/asciidoctor/asciidoctor
+
+= Asciidoctor Test Document
+
+Here is a {disclaimer} for my {url-repo}.

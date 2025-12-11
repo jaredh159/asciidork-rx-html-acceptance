@@ -1,0 +1,16 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/colophon/
+= Title
+:doctype: book
+
+[dedication]
+= Dedication
+
+For S.S.T.--
+
+thank you for the plague of archetypes.
+
+= Part 1
+
+== Chapter 1
+
+Hello

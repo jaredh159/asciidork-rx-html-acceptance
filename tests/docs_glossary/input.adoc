@@ -1,0 +1,8 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/glossary/
+[glossary]
+== Glossary
+
+[glossary]
+mud:: wet, cold dirt
+rain::
+	water falling from the sky

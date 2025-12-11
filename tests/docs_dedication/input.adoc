@@ -1,0 +1,10 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/dedication
+= Title
+:doctype: book
+
+[dedication]
+== Dedication
+
+For S.S.T.--
+
+thank you for the plague of archetypes.

@@ -1,0 +1,77 @@
+// https://docs.asciidoctor.org/asciidoc/latest/attributes/id/
+
+// block assignment
+
+[#goals]
+* Goal 1
+* Goal 2
+
+[id=goals2]
+* Goal 1
+* Goal 2
+
+[[goals3]]
+* Goal 1
+* Goal 2
+
+[quote.movie#roads,Dr. Emmett Brown]
+____
+Roads? Where we're going, we don't need roads.
+____
+
+// inline assignment
+
+[#free_the_world1]#free the world#
+
+[[free_the_world2]]free the world
+
+// id as anchor : on block element
+
+[#notice]
+This paragraph gets a lot of attention.
+
+[[notice2]]
+This paragraph gets a lot of attention.
+
+// id as anchor : as inline anchor
+
+[[bookmark-a]]Inline anchors make arbitrary content referenceable.
+
+[#bookmark-b]#Inline anchors can be applied to a phrase like this one.#
+
+// id as anchor : on a list item
+
+* First item
+* [[step2]]Second item
+* Third item
+
+[[cpu,CPU]]Central Processing Unit (CPU)::
+The brain of the computer.
+
+[[hard-drive]]Hard drive::
+Permanent storage for operating system and/or user files.
+
+// id as anchor : on a table cell
+
+|===
+|[[my_cell]]The table cell I want to jump to.
+|===
+
+// id as anchor : on an inline image
+
+[[tiger-image]]image:tiger.png[Image of a tiger]
+
+anchor:liger-image[]image:tiger.png[Image of a tiger]
+
+// add additional anchors to a section
+
+== section
+
+[#version-4_9]
+=== [[current]][[latest]]Version 4.9
+
+// customize automatic reftext
+
+[[figer-image,Image of a tiger]]
+.This image represents a Bengal tiger also called the Indian tiger
+image::tiger.png[]

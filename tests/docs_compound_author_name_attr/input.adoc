@@ -1,0 +1,12 @@
+= Quantum Networks
+:author: Mara_Moss Wirribi
+
+== About {author}
+
+{firstname} lives on the Bellarine Peninsula near Geelong, Australia.
+You can contact {firstname} at {email}.
+
+P.S. Don't ask what the {middlename} stands for; it's a secret.
+{authorinitials}
+
+

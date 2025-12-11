@@ -1,0 +1,19 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/appendix/
+= Article Title
+:appendix-caption: Exhibit
+:sectnums:
+:toc:
+
+== Section
+
+=== Subsection
+
+[appendix]
+== First Appendix
+
+=== First Subsection
+
+=== Second Subsection
+
+[appendix]
+== Second Appendix

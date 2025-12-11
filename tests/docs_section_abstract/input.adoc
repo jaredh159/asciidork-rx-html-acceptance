@@ -1,0 +1,9 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/abstract/
+= Article Title
+
+[abstract]
+== Abstract
+
+Documentation is a distillation of many long adventures.
+
+== Section Title

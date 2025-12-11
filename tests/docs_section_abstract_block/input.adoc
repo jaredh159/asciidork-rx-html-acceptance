@@ -1,0 +1,8 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/abstract-block/
+= Document Title
+
+[abstract]
+.Abstract
+Documentation is a distillation of many long adventures.
+
+== First Section

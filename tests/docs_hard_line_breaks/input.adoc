@@ -1,0 +1,30 @@
+// https://docs.asciidoctor.org/asciidoc/latest/blocks/hard-line-breaks/
+line one +
+line two
+
+[%hardbreaks]
+line one
+line two
+
+line one +
+ +
+line three
+
+{empty} +
+line two
+
+{empty} +
+line two +
+{empty} +
+line four
+
+-- Come here! -- I said. +
+-- What is it? -- replied Lance.
+
+Rubies are red, +
+Topazes are blue.
+
+:hardbreaks-option:
+
+line one
+line two

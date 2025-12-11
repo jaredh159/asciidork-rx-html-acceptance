@@ -1,0 +1,41 @@
+// https://docs.asciidoctor.org/asciidoc/latest/blocks/breaks/
+Para
+
+---
+
+Para
+
+- - -
+
+Para
+
+***
+
+Para
+
+* * *
+
+Para
+
+'''
+
+Para
+
+<<<
+
+Para
+
+[%always]
+<<<
+
+Para
+
+[page-layout=landscape]
+<<<
+
+left column
+
+[.column]
+<<<
+
+right column

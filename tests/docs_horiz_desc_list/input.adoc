@@ -1,0 +1,35 @@
+// https://docs.asciidoctor.org/asciidoc/latest/lists/horizontal/
+
+.My Title
+[horizontal.properties%step]
+property 1:: does stuff
+property 2:: does different stuff
+
+[horizontal,role=properties,opts=step]
+property 1:: does stuff
+property 2:: does different stuff
+
+[horizontal]
+CPU:: The brain of the computer.
+Hard drive:: Permanent storage for operating system and/or user files.
+RAM:: Temporarily stores information the CPU uses during operation.
+
+[horizontal,labelwidth=25,itemwidth=75]
+A short term:: The term for this item likely fits inside the column's width.
+A long term that wraps across multiple lines:: The term for this item wraps since the width of the term column is restricted using the `labelwidth` attribute.
+
+[horizontal,labelwidth=20%]
+property 1:: does stuff
+property 2:: does different stuff
+
+[horizontal, labelwidth="25%", itemwidth="75%"]
+term:: description
+
+[horizontal]
+[labelwidth="25", itemwidth="75"]
+term:: def
+
+[horizontal]
+[labelwidth="25", itemwidth="75"]
+term:: def
+

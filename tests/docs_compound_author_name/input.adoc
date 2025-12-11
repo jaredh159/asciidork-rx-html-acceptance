@@ -1,0 +1,15 @@
+= Drum and Bass Breakbeats
+Ann_Marie Jenson; Tomás López_del_Toro
+
+The first author's first name is {firstname}.
+
+The second author's last name is {lastname_2}.
+
+== About {author}
+
+You can contact {firstname} at {email}.
+
+P.S. Don't ask what the {middlename} stands for; it's a secret.
+{authorinitials}
+
+

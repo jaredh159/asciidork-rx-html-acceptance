@@ -1,0 +1,20 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/parts/
+= Book Title
+:doctype: book
+
+= Part I
+
+This is the implicit partintro.
+
+== Chapter A
+
+Chapter content.
+
+= Part II
+
+[partintro]
+This is the explicit partintro.
+
+== Chapter B
+
+Chapter content.

@@ -1,0 +1,35 @@
+// https://docs.asciidoctor.org/asciidoc/latest/attributes/role/
+
+// assign role to blocks
+
+// standard syntax
+
+[.rolename]
+****
+This is a sidebar with a role assigned to it, rolename.
+****
+
+[.role1.role2]
+****
+This is a sidebar with two roles assigned to it, role1 and role2.
+****
+
+// formal syntax
+
+[role=rolename]
+****
+This is a sidebar with one role assigned to it, rolename.
+****
+
+[role="role1 role2"]
+****
+This is a sidebar with two roles assigned to it, role1 and role2.
+****
+
+// Assign roles to formatted inline elements
+
+This sentence contains [.application]*bold inline content* that's assigned a role.
+
+This sentence contains [.varname]`monospace text` that's assigned a role.
+
+This [.rolename1.rolename2]#formatted text# has two roles.

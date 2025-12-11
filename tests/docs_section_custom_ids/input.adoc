@@ -1,0 +1,17 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/custom-ids/
+
+[#tigers-subspecies]
+=== Subspecies of Tiger
+
+[#tigers-subspecies2,reftext=Subspecies]
+=== Subspecies of Tiger
+
+[[tigers-subspecies3,Subspecies]]
+=== Subspecies of Tiger
+
+== [[secondary-id]][[tertiary-id]]Section Title
+
+== Section Title[[secondary-id2]][[tertiary-id2]]
+
+[#primary-id]
+== [[secondary-id3]][[tertiary-id3]]Section Title

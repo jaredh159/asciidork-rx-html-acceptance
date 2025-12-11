@@ -1,0 +1,34 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/numbers/
+
+= Title
+:sectnums:
+
+== Numbered Section
+
+:sectnums!:
+
+== Unnumbered Section
+
+== Unnumbered Section
+
+=== Unnumbered Section
+
+:sectnums:
+
+== Numbered Section
+
+=== Numbered Section
+
+==== Numbered Section
+
+===== Numbered Section
+
+:sectnumlevels: 2
+
+== Another Section
+
+=== Another Section
+
+==== Another Section
+
+===== Another Section

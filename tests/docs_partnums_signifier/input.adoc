@@ -1,0 +1,28 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/part-numbers-and-signifier/
+= The Secret Manual
+:doctype: book
+:sectnums:
+:partnums:
+
+= Defensive Operations
+
+== An Introduction to DefenseOps
+
+:chapter-signifier: Peatükk
+
+= Managing Werewolves
+
+== Section
+
+:part-signifier: Component
+
+= Advanced Tactics
+
+== Section
+
+:!part-signifier:
+:!chapter-signifier:
+
+= Covert Operations
+
+== Section

@@ -1,0 +1,106 @@
+// https://docs.asciidoctor.org/asciidoc/latest/sections/user-index/
+// asciidoctor ruby test cases and my own edge case tests for index terms
+foo (((Tigers))) bar
+
+foo (((Panthera
+tigris))) bar
+
+foo (((*Tigers*))) bar
+
+foo (((Tiger (Panthera tigris)))) bar
+
+foo (((NIST))) bar
+
+foo (((index term)) bar
+
+foo (((Big cats, Tigers))) bar
+
+foo (((Big cats,Tigers , Panthera tigris))) bar
+
+foo (((Tigers, "[Big],
+scary cats"))) bar
+
+foo (((Animals,Cats))) bar
+
+foo (((Big cats,Tigers))) bar
+
+foo (((name=value,variable,assignment))) bar
+
+foo ((tiger)) bar
+
+foo ((cat)) bar
+
+foo (( panthera
+tigris )) bar
+
+foo ((*tiger*)) bar
+
+foo ((panthera tigris)) bar
+
+foo ((index term)) bar
+
+foo \((NIST)) bar
+
+foo \(((NIST))) bar
+
+foo \((tiger)) bar
+
+foo \((cat)) bar
+
+foo (text with ((index term))) bar
+
+foo (((index term)) for text) bar
+
+foo (((Tigers)))
+(((Animals,Cats))) bar
+
+foo The ((tiger)) (Panthera tigris) is the largest ((cat)) species. bar
+
+foo The ((panthera tigris)) is the largest cat species.
+(((Big cats,Tigers))) bar
+
+foo indexterm:[Tigers] bar
+
+foo indexterm:[Big cats, Tigers] bar
+
+foo indexterm:[Big cats,Tigers , Panthera tigris] bar
+
+foo indexterm:[*Tigers*] bar
+
+foo indexterm:[Tiger [Panthera tigris\]] bar
+
+foo indexterm2:[tiger] bar
+
+foo indexterm2:[Flash,see=HTML 5] bar
+
+foo indexterm2:[HTML 5,see-also="CSS 3, SVG"] bar
+
+foo indexterm:[Flash,see=HTML 5] bar
+
+foo indexterm:[HTML 5,see-also="CSS 3, SVG"] bar
+
+foo indexterm:["name=value",variable,assignment] bar
+
+foo The indexterm2:[tiger] (Panthera tigris) is the largest cat species. bar
+
+foo Flashindexterm:[Flash,see=HTML 5] has been supplanted by HTML 5indexterm:[HTML 5,see-also="CSS 3, SVG"]. bar
+
+foo indexterm2:[Flash,see=HTML 5] has been supplanted by indexterm2:[HTML 5,see-also="CSS 3, SVG"]. bar
+
+// v-- emitted as text
+// t((xxx))
+ex (((3-2))
+
+//    v-- part of term
+// (((xxxx)))
+ex ((((4-3)))
+
+//    v----v parts of term
+// (((xxxxxx)))
+ex ((((four))))
+
+//  vv-- emitted as text
+// !!((xxx))
+ex ((((4-2))
+
+ex ((2-2))))

@@ -1,0 +1,19 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/url-macro/
+
+// -- From URL to macro --
+
+https://asciidoctor.org[]
+
+Type "https://asciidoctor.org[]" into the location bar of your browser.
+
+Use http://example.com?menu=<value>[] to open to the menu named `<value>`.
+
+// -- Custom link text --
+
+Chat with other Fedora users in the irc://irc.freenode.org/#fedora[Fedora IRC channel].
+
+Ask questions in the https://chat.asciidoc.org[*community chat*].
+
+// -- Link attributes --
+
+Chat with other AsciiDoc users in the https://chat.asciidoc.org[*project chat*^,role=green].

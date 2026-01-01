@@ -1,0 +1,11 @@
+// https://docs.asciidoctor.org/asciidoc/latest/lists/qanda/
+
+// -- Question and answer list syntax --
+
+[qanda]
+What is the answer?::
+This is the answer.
+
+Are cameras allowed?::
+Are backpacks allowed?::
+No.

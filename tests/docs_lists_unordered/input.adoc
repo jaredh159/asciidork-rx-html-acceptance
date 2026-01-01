@@ -1,0 +1,74 @@
+// https://docs.asciidoctor.org/asciidoc/latest/lists/unordered/
+
+// -- Basic unordered list --
+
+* Edgar Allan Poe
+* Sheri S. Tepper
+* Bill Bryson
+
+// with title
+
+.Kizmet's Favorite Authors
+* Edgar Allan Poe
+* Sheri S. Tepper
+* Bill Bryson
+
+// using hyphens
+
+- Edgar Allan Poe
+- Sheri S. Tepper
+- Bill Bryson
+
+// -- Forcing lists apart --
+
+* Apples
+* Oranges
+
+//-
+
+* Walnuts
+* Almonds
+
+// -- Nested unordered list --
+
+.Possible DefOps manual locations
+* West wood maze
+** Maze heart
+*** Reflection pool
+** Secret exit
+* Untracked file in git repository
+
+// deep nesting
+
+* Level 1 list item
+** Level 2 list item
+*** Level 3 list item
+**** Level 4 list item
+***** Level 5 list item
+****** etc.
+* Level 1 list item
+
+// -- Custom markers --
+
+[square]
+* one
+* two
+* three
+
+// inherited style
+
+[circle]
+* circles
+** all
+*** the
+**** way
+***** down
+
+// reset style
+
+[square]
+* squares
+** up top
+[circle]
+*** circles
+**** down below

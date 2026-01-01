@@ -1,0 +1,16 @@
+// https://docs.asciidoctor.org/asciidoc/latest/lists/checklist/
+
+// -- Checklist syntax --
+
+* [*] checked
+* [x] also checked
+* [ ] not checked
+* normal list item
+
+// -- Interactive checkboxes --
+
+[%interactive]
+* [*] checked
+* [x] also checked
+* [ ] not checked
+* normal list item

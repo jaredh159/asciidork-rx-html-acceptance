@@ -1,0 +1,15 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/complex-urls/
+
+// -- Solution A: attribute --
+
+:link-with-underscores: https://asciidoctor.org/now_this__link_works.html
+
+This URL has repeating underscores {link-with-underscores}.
+
+// -- Solution B: pass macro --
+
+This URL has repeating underscores pass:macros[https://asciidoctor.org/now_this__link_works.html].
+
+// double plus delimiters
+
+This URL has repeating underscores link:++https://asciidoctor.org/now_this__link_works.html++[].

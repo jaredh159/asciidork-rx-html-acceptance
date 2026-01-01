@@ -1,0 +1,42 @@
+// https://docs.asciidoctor.org/asciidoc/latest/text/troubleshoot-unconstrained-formatting/
+Sara__h__
+
+**B**old
+
+&ndash;**2016**
+
+** bold **
+
+我喜欢**大**狗
+
+*9*-to-*5*
+
+"`end points`"
+
+// we render this differently, but they were just showing this as
+// an example of what you don't want from asciidoctor...
+// "``end points``"
+
+"```end points```"
+
+"[.code]``end points``"
+
+\"``end points``"
+
+The ``class```' static methods make it easy to operate on files and directories.
+
+The `class`' static methods make it easy to operate on files and directories.
+
+:scores: __
+:hash3: ###
+
+The {scores}kernel qualifier can be used with the {scores}attribute{scores} keyword...
+
+#`CB{hash3}2`# and #`CB{hash3}3`#
+
+The +__kernel+ qualifier can be used with the +__attribute__+ keyword...
+
+#`+CB###2+`# and #`+CB###3+`#
+
+`+TEXT+`
+

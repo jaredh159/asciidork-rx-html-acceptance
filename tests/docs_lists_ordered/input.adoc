@@ -1,0 +1,68 @@
+// https://docs.asciidoctor.org/asciidoc/latest/lists/ordered/
+
+// -- Basic ordered list --
+
+1. Protons
+2. Electrons
+3. Neutrons
+
+// without explicit numbers
+
+. Protons
+. Electrons
+. Neutrons
+
+// with title
+
+.Parts of an atom
+. Protons
+. Electrons
+. Neutrons
+
+// custom start value
+
+[start=4]
+. Step four
+. Step five
+. Step six
+
+// reversed
+
+[%reversed]
+.Parts of an atom
+. Protons
+. Electrons
+. Neutrons
+
+// -- Nested ordered list --
+
+. Step 1
+. Step 2
+.. Step 2a
+.. Step 2b
+. Step 3
+
+// mixed ordered and unordered
+
+. Linux
+* Fedora
+* Ubuntu
+* Slackware
+. BSD
+* FreeBSD
+* NetBSD
+
+// -- Number styles --
+
+[lowerroman,start=5]
+. Five
+. Six
+[loweralpha]
+.. a
+.. b
+.. c
+. Seven
+
+// -- Escaping the list marker --
+
+P.{empty}O. Box

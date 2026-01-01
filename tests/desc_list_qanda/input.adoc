@@ -1,0 +1,236 @@
+= Qanda Style Description List Test Cases
+
+// Basic Test Case (HTML/DocBook)
+// Source: test/lists_test.rb:3317-3339 (HTML test)
+// Source: test/lists_test.rb:3341-3363 (DocBook test)
+
+[qanda]
+Question 1::
+        Answer 1.
+Question 2::
+        Answer 2.
++
+NOTE: A note about Answer 2.
+
+
+// Consecutive Questions Without Answers
+// Source: test/lists_test.rb:3365-3381
+// Tests that multiple consecutive questions share a single <question> element in DocBook
+
+[qanda]
+question::
+follow-up question::
+response
+
+last question::
+
+// From Fixture: Simple Q&A with Title
+// Source: test/fixtures/lists.adoc:59-63
+
+.Q&A
+[qanda]
+What is Asciidoctor?::
+  An implementation of the AsciiDoc processor in Ruby.
+What is the answer to the Ultimate Question?:: 42
+
+
+// Edge Case: Single-Line Answers
+// Derived from: test/fixtures/lists.adoc:62 (single-line answer pattern)
+// Implementation: lib/asciidoctor/converter/html5.rb:518-598
+
+[qanda]
+What is 2+2?:: 4
+What color is the sky?:: Blue
+Why?:: Because of Rayleigh scattering.
+
+
+// Edge Case: Empty Answers
+// Derived from: test/lists_test.rb:3365-3381 (shows "last question::" with no answer)
+// Implementation: lib/asciidoctor/converter/docbook5.rb:138-167 (empty <answer> still generated)
+
+[qanda]
+Unanswered question::
+Another unanswered::
+Question with answer::
+  This one has an answer.
+
+
+// Edge Case: Multi-Paragraph Answer
+// Derived from: test/lists_test.rb:3317-3339 (uses + continuation for NOTE block)
+// Tests block content continuation in answers
+
+[qanda]
+Complex question::
+  First paragraph of the answer.
++
+Second paragraph of the answer.
++
+Third paragraph with more details.
+
+
+// Edge Case: Answer with Nested List
+// Derived from: lib/asciidoctor/converter/html5.rb:592 (dd.content renders block content)
+// Tests nested unordered list in answer
+
+[qanda]
+What are the primary colors?::
++
+* Red
+* Green
+* Blue
+
+
+// Edge Case: Answer with Code Block
+// Derived from: lib/asciidoctor/converter/html5.rb:592 (dd.content renders block content)
+// Tests source block in answer
+
+[qanda]
+How do you print Hello World in Ruby?::
++
+[source,ruby]
+----
+puts "Hello World"
+----
+
+
+//  Edge Case: Multiple Terms Sharing Answer
+// Derived from: lib/asciidoctor/converter/html5.rb:585-588 (iterates over terms array)
+// Derived from: lib/asciidoctor/converter/docbook5.rb:152-154 (multiple <simpara> in <question>)
+// Tests multiple questions/terms before a single answer
+
+[qanda]
+FAQ::
+Frequently Asked Questions::
+Common Questions::
+  These are all the same thing.
+
+
+// Edge Case: Question with Inline Formatting
+// Derived from: lib/asciidoctor/converter/html5.rb:586 (dt.text - processes inline content)
+// Tests inline substitutions in question text
+
+[qanda]
+What is *bold* text?::
+  Text wrapped in asterisks.
+What about _italic_?::
+  Text wrapped in underscores.
+And `monospace`?::
+  Text wrapped in backticks.
+
+
+// Edge Case: Very Long Question
+// Derived from: lib/asciidoctor/converter/manpage.rb:200-220 (question text handling)
+// Tests wrapping behavior in various output formats
+
+[qanda]
+This is a very long question that spans multiple words and might cause wrapping issues in various output formats, especially in narrow viewports or printed documentation where space is limited?::
+  Short answer.
+
+
+// Edge Case: Question with Special Characters
+// Derived from: parser handling of :: delimiter
+// Tests escaping and special character handling
+
+[qanda]
+What does the `::` delimiter mean?::
+  It separates the term from the definition.
+How do you escape `::` in a question?::
+  Use `{two-colons}` attribute or a zero-width space.
+
+
+// Edge Case: Qanda with Role/Class
+// Derived from: lib/asciidoctor/converter/html5.rb:520 (node.role added to classes array)
+// HTML output: <div class="qlist qanda custom-role">
+
+[.custom-role]
+[qanda]
+Styled question?::
+  Styled answer.
+
+
+// Edge Case: Qanda with ID
+// Derived from: lib/asciidoctor/converter/html5.rb:521-524 (node.id handling)
+// Tests anchor/ID attribute on qanda block
+
+[#my-faq]
+[qanda]
+Referenced question?::
+  Referenced answer.
+
+
+// Edge Case: Nested Admonitions in Answers
+// Derived from: test/lists_test.rb:3317-3339 (NOTE block in answer)
+// Tests multiple admonition blocks in single answer
+
+[qanda]
+Important question::
++
+WARNING: This is a warning inside an answer.
++
+TIP: And here's a tip too.
+
+
+// Edge Case: Answer with Table
+// Derived from: lib/asciidoctor/converter/html5.rb:592 (dd.content renders any block)
+// Tests complex block content (table) in answer
+
+[qanda]
+What are the values?::
++
+[cols="1,1"]
+|===
+|Key |Value
+
+|A |1
+|B |2
+|===
+
+
+// Edge Case: Unicode in Questions and Answers
+// Derived from: general text handling (no special unicode tests found)
+// Tests internationalization and non-ASCII characters
+
+[qanda]
+什么是 AsciiDoc?::
+  一种轻量级标记语言。
+Was ist AsciiDoc?::
+  Eine leichtgewichtige Auszeichnungssprache.
+Qu'est-ce qu'AsciiDoc?::
+  Un langage de balisage léger.
+
+
+// Edge Case: Question Ending with Question Mark
+// Derived from: general syntax (question mark is valid in term text)
+// Tests that trailing punctuation doesn't interfere with :: parsing
+
+[qanda]
+Is this a question?::
+  Yes, it is.
+What about this one?::
+  Also yes.
+
+
+// Edge Case: Answer-Only (No Question Text)
+// Derived from: parser behavior with empty terms
+// Tests edge case of empty question/term
+
+[qanda]
+::
+  An answer without a visible question.
+
+
+// Edge Case: Mixed with Other List Types
+// Derived from: test/lists_test.rb:3317-3339 (block continuation pattern)
+// Tests ordered list nested within qanda answer
+
+[qanda]
+First Q&A question::
+  First answer.
+
+Second Q&A question::
+  Second answer with embedded list:
++
+. Step one
+. Step two
+. Step three
+

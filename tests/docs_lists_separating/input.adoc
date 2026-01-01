@@ -1,0 +1,20 @@
+// https://docs.asciidoctor.org/asciidoc/latest/lists/separating/
+
+// -- Using a line comment --
+
+* Apples
+* Oranges
+
+//-
+
+* Walnuts
+* Almonds
+
+// -- Using a block attribute line --
+
+* Apples
+* Oranges
+
+[]
+. Wash
+. Slice

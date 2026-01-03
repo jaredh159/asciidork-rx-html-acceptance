@@ -1,0 +1,42 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/link-macro-attribute-parsing/
+
+// -- Link text alongside named attributes --
+
+https://chat.asciidoc.org[Discuss AsciiDoc]
+
+https://chat.asciidoc.org[Discuss AsciiDoc,role=resource,window=_blank]
+
+https://example.org["Google, DuckDuckGo, Ecosia",role=teal]
+
+https://example.org["1=2 posits the problem of inequality"]
+
+https://example.org["href=\"#top\" attribute"] creates link to top of page
+
+https://chat.asciidoc.org[role=button,window=_blank,opts=nofollow]
+
+// -- Target a separate window --
+
+https://asciidoctor.org[Asciidoctor,window=read-later]
+
+// -- Target a blank window --
+
+https://asciidoctor.org[Asciidoctor,window=_blank]
+
+// -- noopener and nofollow --
+
+https://asciidoctor.org[Asciidoctor,window=read-later,opts=noopener]
+
+https://asciidoctor.org[Asciidoctor,window=_blank,opts=nofollow]
+
+https://asciidoctor.org[Asciidoctor,window=read-later,opts="noopener,nofollow"]
+
+link:post.html[My Post,opts=nofollow]
+
+// -- Blank window shorthand --
+
+Let's view the raw HTML of the link:view-source:asciidoctor.org[Asciidoctor homepage^].
+
+https://example.org["Google, DuckDuckGo, Ecosia^",role=btn]
+
+https://example.org[Google, DuckDuckGo, Ecosia^]
+

@@ -1,0 +1,21 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/mailto-macro/
+
+// -- Link text and named attributes --
+
+mailto:join@discuss.example.org[Subscribe]
+
+mailto:join@discuss.example.org[Subscribe,role=email]
+
+mailto:join@discuss.example.org["Click, subscribe, and participate!"]
+
+// -- Subject and body --
+
+mailto:join@discuss.example.org[Subscribe,Subscribe me]
+
+mailto:join@discuss.example.org[Subscribe,Subscribe me,I want to participate.]
+
+mailto:join@discuss.example.org[,Subscribe me,I want to participate.]
+
+mailto:join@discuss.example.org[,Subscribe me]
+
+mailto:join@discuss.example.org[Subscribe,"I want to participate, so please subscribe me"]

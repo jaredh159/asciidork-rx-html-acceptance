@@ -1,0 +1,25 @@
+The homepage for the Asciidoctor Project is https://www.asciidoctor.org.
+
+// angle brackets convention
+
+You'll often see <https://example.org> used in examples.
+
+// boundary delimitation
+
+<https://google.com> -- where you find stuff
+
+// -- Email autolinks --
+
+Email us at hello@example.com to say hello.
+
+// -- Escaping URLs --
+
+Once launched, the site will be available at \https://example.org.
+
+If you cannot access the site, email \help@example.org for assistance.
+
+// using subs attribute
+
+[subs=-macros]
+Once launched, the site will be available at https://example.org.
+

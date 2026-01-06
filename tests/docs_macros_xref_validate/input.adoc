@@ -1,0 +1,11 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/xref-validate/
+
+// -- Validate cross references --
+
+// invalid reference example (foobar does not exist)
+See <<foobar>>.
+
+[#foobaz]
+== Foobaz
+
+Content here.

@@ -1,0 +1,17 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/xref-text-and-style/
+
+// -- Default styling --
+
+[reftext="Installation Procedure"]
+=== Installation
+
+Content here.
+
+// -- Cross reference styles --
+
+== Installation
+
+.Big Cats
+image::big-cats.png[]
+
+

@@ -1,0 +1,28 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/xref/
+
+// -- Automatic anchors --
+
+== Anchors
+
+This section describes anchors.
+
+== Link Macro Attributes
+
+This section describes link macro attributes.
+
+== Internal Cross References
+
+This section describes internal cross references.
+
+The section <<anchors>> describes how automatic anchors work.
+
+// -- Explicit link text --
+
+Learn how to <<link-macro-attributes,use attributes within the link macro>>.
+
+Learn how to xref:link-macro-attributes[use attributes within the link macro].
+
+// -- Natural cross reference --
+
+// NB: so far, we've decided not to implement them, they are discouraged
+// Refer to <<Internal Cross References>>.

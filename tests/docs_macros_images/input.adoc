@@ -1,0 +1,33 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/images/
+
+// -- Block image macro --
+
+Content in document.
+
+image::sunset.jpg[]
+
+Content in document
+
+// with alt text
+
+image::sunset.jpg[Sunset]
+
+// with quoted alt text
+
+image::sunset.jpg["Mesa Verde Sunset, by JAVH"]
+
+// with id, link, dimensions
+
+.A mountain sunset
+[#img-sunset,link=https://www.flickr.com/photos/javh/5448336655]
+image::sunset.jpg[Sunset,200,100]
+
+// -- Figure caption label --
+
+:figure-caption!:
+
+// -- Inline image macro --
+
+Click image:play.png[] to get the party started.
+
+Click image:pause.png[title=Pause] when you need a break.

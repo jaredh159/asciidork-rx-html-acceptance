@@ -31,15 +31,14 @@ A bold statement!{fn-disclaimer}
 
 Another outrageous statement.{fn-disclaimer}
 
-// NB: currently not supported, awaiting feedback from dan
 // with text formatting
 
-// :fn-disclaimer2: pass:c,q[footnote:disclaimer2[Opinions are _mine_, and mine *alone*.]]
-//
-// A bold statement!{fn-disclaimer2}
-//
-// Another outrageous statement.{fn-disclaimer2}
-//
+:fn-disclaimer2: pass:c,q[footnote:disclaimer2[Opinions are _mine_, and mine *alone*.]]
+
+A bold statement!{fn-disclaimer2}
+
+Another outrageous statement.{fn-disclaimer2}
+
 // NB: this example uses "Natural cross-references" which we are trying to not support
 // // -- Footnotes in headings --
 //

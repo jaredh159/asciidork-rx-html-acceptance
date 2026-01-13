@@ -1,0 +1,22 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/image-link/
+
+// -- link attribute --
+
+// block image with link using block attribute
+
+[link=https://example.org]
+image::logo.png[Logo]
+
+// block image with link using named attribute
+
+image::logo.png[Logo,link=https://example.org]
+
+// inline image with link
+
+image:apply.jpg[Apply,link=https://apply.example.org] today!
+
+// -- Link controls --
+
+// link with window and nofollow
+
+image::logo.png[Logo,link=https://example.org,window=_blank,opts=nofollow]

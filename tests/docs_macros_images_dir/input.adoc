@@ -1,0 +1,11 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/images-directory/
+
+// -- imagesdir attribute syntax --
+
+// incorrect usage (don't do this)
+
+image::{imagesdir}/name-of-image.png[]
+
+// correct usage
+
+image::name-of-image.png[]

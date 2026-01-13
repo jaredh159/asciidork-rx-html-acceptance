@@ -1,0 +1,20 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/image-url/
+
+// -- Image URL targets --
+
+// block image with URL target
+
+image::https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg[Tux,250,350]
+
+// inline image with URL target
+
+You can find image:https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg[Linux,25,35] everywhere these days.
+
+// using a URL as the base URL for images
+
+:imagesdir-old: {imagesdir}
+:imagesdir: https://upload.wikimedia.org/wikipedia/commons
+
+image::3/35/Tux.svg[Tux,250,350]
+
+:imagesdir: {imagesdir-old}

@@ -1,0 +1,58 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/image-position/
+
+// -- Positioning attributes --
+
+// block image with float and align
+
+image::tiger.png[Tiger,200,200,float="right",align="center"]
+
+// inline image with float
+
+image:linux.png[Linux,150,150,float="right"]
+You can find Linux everywhere these days!
+
+// -- Positioning roles -- 
+
+// block image using roles
+
+[.right.text-center]
+image::tiger.png[Tiger,200,200]
+
+// inline image with role attribute
+
+image:sunset.jpg[Sunset,150,150,role=right] What a beautiful sunset!
+
+// -- Framing roles --
+
+// image with framing and positioning roles
+
+image:logo.png[role="related thumb right"] Here's text that will wrap around the image to the left.
+
+// -- Control the float --
+
+// multiple floated images without float-group
+
+[.left]
+.Image A
+image::a.png[A,240,180]
+
+[.left]
+.Image B
+image::b.png[B,240,180,title=Image B]
+
+Text below images.
+
+// multiple images grouped with float-group
+
+[.float-group]
+--
+[.left]
+.Image A
+image::a.png[A,240,180]
+
+[.left]
+.Image B
+image::b.png[B,240,180]
+--
+
+Text below images.

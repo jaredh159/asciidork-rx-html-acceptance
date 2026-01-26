@@ -1,0 +1,17 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/image-svg/
+
+// -- Options for SVG images --
+
+// default (none option)
+image::sample.svg[Static,300]
+
+// interactive option
+image::sample.svg[Interactive,300,opts=interactive]
+
+// TODO: not supported yet
+// inline option
+// image::sample.svg[Embedded,300,opts=inline]
+
+
+
+

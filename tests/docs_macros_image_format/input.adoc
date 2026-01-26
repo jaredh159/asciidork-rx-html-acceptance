@@ -1,0 +1,9 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/image-format/
+
+// -- Automatic image format --
+
+image::avatar.svg[]
+
+// -- Format attribute --
+
+image::https://example.org/avatar[format=svg]

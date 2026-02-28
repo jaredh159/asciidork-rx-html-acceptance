@@ -1,0 +1,61 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/icons/
+
+:icons: image
+
+// -- Default icons directory and type --
+
+NOTE: Remember the milk!
+
+// -- Configure the icons directory using iconsdir --
+
+:icons: image
+:iconsdir: icons
+
+NOTE: Remember the milk!
+
+// -- Configure the icon type using icontype --
+
+:icons: image
+:icontype: svg
+
+NOTE: Remember the milk!
+
+:icons: font
+
+NOTE: Remember the milk!
+
+// https://docs.asciidoctor.org/asciidoc/latest/macros/icon-macro/
+
+// -- Anatomy --
+
+icon:heart[2x,role=red]
+
+// -- Example --
+
+icon:tags[] ruby, asciidoctor
+
+// -- Role --
+
+icon:tags[role=blue] ruby, asciidoctor
+
+// -- Link and window --
+
+icon:download[link=https://rubygems.org/downloads/whizbang-1.0.0.gem, window=_blank]
+
+// -- Icon macro attributes (image mode only) --
+
+icon:tags[Tags,width=16] ruby, asciidoctor
+
+// -- Icon macro attributes (font mode only) - size --
+
+icon:heart[2x]
+
+icon:heart[size=2x]
+
+[%hardbreaks]
+icon:bolt[fw] bolt
+icon:heart[fw] heart
+
+// -- Rotate and flip --
+
+icon:shield[rotate=90, flip=vertical]

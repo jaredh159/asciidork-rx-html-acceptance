@@ -1,0 +1,23 @@
+// https://docs.asciidoctor.org/asciidoc/latest/macros/ui-macros/
+
+:experimental:
+
+// -- Button macro syntax --
+
+Press the btn:[OK] button when you are finished.
+
+Select a file in the file navigator and click btn:[Open].
+
+// -- Menu macro syntax --
+
+To save the file, select menu:File[Save].
+
+Select menu:View[Zoom > Reset] to reset the zoom level to the default setting.
+
+// NB: shorthand syntax is discouraged, "not on standards track", we're not doing it
+
+// shorthand menu syntax
+// Select "Zoom > Reset" to reset the zoom level.
+//
+// // character reference in menu
+// Select "&#8942; > More Tools > Extensions" to find and enable extensions.

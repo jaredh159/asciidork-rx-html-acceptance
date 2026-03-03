@@ -1,0 +1,49 @@
+// https://docs.asciidoctor.org/asciidoc/latest/blocks/admonitions/
+
+// -- Admonition paragraph syntax --
+
+WARNING: Wolpertingers are known to nest in server racks.
+Enter at your own risk.
+
+// -- Admonition block syntax --
+
+[IMPORTANT]
+.Feeding the Werewolves
+====
+While werewolves are hardy community members, keep in mind the following dietary concerns:
+
+. They are allergic to cinnamon.
+. More than two glasses of orange juice in 24 hours makes them howl in harmony with alarms and sirens.
+. Celery makes them sad.
+====
+
+// -- Enable admonition icons --
+
+:icons: font
+
+WARNING: Wolpertingers are known to nest in server racks.
+Enter at your own risk.
+
+// -- Using emoji for admonition icons --
+
+// unicode glyph
+:tip-caption: 💡
+
+[TIP]
+It's possible to use Unicode glyphs as admonition icons.
+
+// character reference
+:tip-caption: pass:[&#128161;]
+
+[TIP]
+It's possible to use Unicode glyphs as admonition icons.
+
+// github emoji shortcodes
+ifdef::env-github[]
+:tip-caption: :bulb:
+endif::[]
+
+[TIP]
+It's possible to use emojis as admonition icons on GitHub.
+
+

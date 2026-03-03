@@ -1,0 +1,138 @@
+== Text Icons (default)
+
+NOTE: A simple note with default text icon.
+
+TIP: A simple tip with default text icon.
+
+WARNING: A simple warning with default text icon.
+
+CAUTION: A simple caution with default text icon.
+
+IMPORTANT: An important message with default text icon.
+
+== Text Icons with Custom Captions
+
+:note-caption: Nota Bene
+:tip-caption: Pro Tip
+:warning-caption: Watch Out
+:caution-caption: Careful!
+:important-caption: Critical
+
+NOTE: Note with custom caption from document attribute.
+
+TIP: Tip with custom caption from document attribute.
+
+WARNING: Warning with custom caption.
+
+CAUTION: Caution with custom caption.
+
+IMPORTANT: Important with custom caption.
+
+== Block-level Caption Override
+
+[caption="Read This"]
+NOTE: Block-level caption overrides note-caption document attribute.
+
+[caption="Insider Secret"]
+TIP: Block-level caption overrides tip-caption document attribute.
+
+== Disable Captions (unset)
+
+:!note-caption:
+:!tip-caption:
+:!warning-caption:
+:!caution-caption:
+:!important-caption:
+
+NOTE: Caption disabled -- textlabel should be empty/nil.
+
+== Image Icons
+
+:icons:
+
+NOTE: Note with image icon (alt text = default caption).
+
+TIP: Tip with image icon.
+
+:tip-caption: Helpful Hint
+
+TIP: Tip with image icon and custom alt text from tip-caption.
+
+[caption="Local Override"]
+WARNING: Warning with image icon and alt text from block caption.
+
+:!tip-caption:
+:!icons:
+
+== Font Icons
+
+:icons: font
+
+NOTE: Note with font awesome icon (title = default caption).
+
+TIP: Tip with font awesome icon.
+
+:tip-caption: Sage Advice
+
+TIP: Tip with font icon and custom title from tip-caption.
+
+[caption="Please Note"]
+CAUTION: Caution with font icon and title from block caption.
+
+:!tip-caption:
+
+== Delimited Admonition Blocks
+
+[NOTE]
+====
+A delimited note block with font icons.
+
+With multiple paragraphs.
+====
+
+[TIP]
+====
+A delimited tip block with font icons.
+====
+
+:warning-caption: Danger Zone
+
+[WARNING]
+====
+Delimited warning with custom caption as font icon title.
+====
+
+[caption="Heed This"]
+[IMPORTANT]
+====
+Delimited important with block-level caption override.
+====
+
+:!warning-caption:
+:!icons:
+
+== Blank Caption Edge Case
+
+:caption:
+
+NOTE: The generic caption attribute should not affect admonitions.
+
+TIP: Still shows default Tip caption.
+
+== Mixed Within a Section
+
+:icons: font
+:note-caption: FYI
+
+NOTE: Font icon note with custom caption.
+
+:icons:
+
+NOTE: Image icon note with same custom caption as alt text.
+
+:!icons:
+
+NOTE: Text icon note with same custom caption as visible label.
+
+:!note-caption:
+

@@ -1,0 +1,53 @@
+// https://docs.asciidoctor.org/asciidoc/latest/blocks/blockquotes/
+
+// -- Quote paragraph syntax --
+
+.After landing the cloaked Klingon bird of prey in Golden Gate park:
+[quote,Captain James T. Kirk,Star Trek IV: The Voyage Home]
+Everybody remember where we parked.
+
+// -- Quoted block --
+
+[quote,Monty Python and the Holy Grail]
+____
+Dennis: Come and see the violence inherent in the system. Help! Help! I'm being repressed!
+
+King Arthur: Bloody peasant!
+
+Dennis: Oh, what a giveaway! Did you hear that? Did you hear that, eh? That's what I'm on about! Did you see him repressing me? You saw him, Didn't you?
+____
+
+// -- Quoted paragraph --
+
+"I hold it that a little rebellion now and then is a good thing,
+and as necessary in the political world as storms in the physical."
+-- Thomas Jefferson, Papers of Thomas Jefferson: Volume 11
+
+// -- Excerpt --
+
+[.excerpt]
+____
+This text is an excerpt from the referenced literature.
+____
+
+// -- Markdown-style blockquotes --
+
+// NB: asciidork deviates from asciidork in the below paragraph,
+// choosing to render the same as if it were a quoted paragraph
+// not nesting it as a single compound blockquote
+
+> I hold it that a little rebellion now and then is a good thing,
+> and as necessary in the political world as storms in the physical.
+> -- Thomas Jefferson, Papers of Thomas Jefferson: Volume 11
+
+// markdown-style blockquote with block content
+
+> > What's new?
+>
+> I've got Markdown in my AsciiDoc!
+>
+> > Like what?
+>
+> * Blockquotes
+> * Headings
+> * Fenced code blocks

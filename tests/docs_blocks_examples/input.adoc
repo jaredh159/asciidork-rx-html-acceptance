@@ -1,0 +1,16 @@
+// https://docs.asciidoctor.org/asciidoc/latest/blocks/example-blocks/
+
+// -- Example style syntax --
+
+.Optional title
+[example]
+This is an example of an example block.
+
+// -- Delimited example syntax --
+
+.Onomatopoeia
+====
+The book hit the floor with a *thud*.
+
+He could hear doves *cooing* in the pine trees`' branches.
+====

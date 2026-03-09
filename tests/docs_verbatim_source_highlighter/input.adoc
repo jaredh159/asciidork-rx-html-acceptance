@@ -1,0 +1,79 @@
+// https://docs.asciidoctor.org/asciidoc/latest/verbatim/source-highlighter/
+
+// -- Apply source highlighting --
+
+[#hello,ruby]
+----
+require 'sinatra'
+
+get '/hi' do
+  "Hello World!"
+end
+----
+
+// source paragraph
+
+[source,xml]
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+This is normal content.
+
+// -- shell vs console --
+
+[,shell]
+----
+#!/bin/sh
+
+fail () {
+    echo
+    echo "$*"
+    echo
+    exit 1
+} >&2
+
+JAVACMD=java
+which java >/dev/null 2>&1 || fail "ERROR: no 'java' command could be found in your PATH.
+
+exec "$JAVACMD" "$@"
+----
+
+[source,console]
+$ asciidoctor -v
+
+// -- Enable line numbering --
+
+[%linenums,ruby]
+----
+puts 1
+puts 2
+puts 3
+----
+
+// with positional attribute
+
+[,ruby,linenums]
+----
+puts 1
+puts 2
+puts 3
+----
+
+// -- source-language attribute --
+
+:source-highlighter: pygments
+:source-language: java
+
+----
+public void setAttributes(Attributes attributes) {
+    this.options.put(ATTRIBUTES, attributes.map());
+}
+----
+
+// override source-language attribute
+
+:source-highlighter: pygments
+:source-language: java
+
+[,ruby]
+require 'sinatra'

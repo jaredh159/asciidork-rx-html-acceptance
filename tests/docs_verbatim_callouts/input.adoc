@@ -1,0 +1,103 @@
+// https://docs.asciidoctor.org/asciidoc/latest/verbatim/callouts/
+
+// -- Callout syntax --
+
+[source,ruby]
+----
+require 'sinatra' <1>
+
+get '/hi' do <2> <3>
+  "Hello World!"
+end
+----
+<1> Library import
+<2> URL mapping
+<3> Response block
+
+// -- Automatic numbering --
+
+[,ruby]
+----
+require 'sinatra' <.>
+
+get '/hi' do <.> <.>
+  "Hello World!"
+end
+----
+<.> Library import
+<.> URL mapping
+<.> Response block
+
+// -- Mixed numbering --
+
+[,ruby]
+----
+require 'asciidoctor' <.>
+
+puts Asciidoctor::VERSION <1>
+
+Asciidoctor.convert_file 'README.adoc' <.>
+----
+<.> The require statement exports the class from the gem to the global scope.
+<.> We can then call methods provided by that class.
+
+// -- Copy and paste friendly callouts --
+
+----
+line of code // <1>
+line of code # <2>
+line of code ;; <3>
+line of code <!--4-->
+----
+
+// -- Custom line comment prefix --
+
+[source,erlang,line-comment=%]
+----
+-module(hello_world).
+-compile(export_all).
+
+hello() ->
+    io:format("hello world~n"). % <1>
+----
+<1> A callout behind a custom line comment prefix.
+
+// -- Disable line comment processing --
+
+[source,asciidoc,line-comment=]
+----
+-- <1>
+A paragraph in an open block.
+--
+----
+<1> An open block delimiter.
+
+// -- XML callouts --
+
+[source,xml]
+----
+<section>
+  <title>Section Title</title> <!--1-->
+</section>
+----
+<1> The section title is required.
+
+// -- Callout icons --
+
+:icons: font
+
+[source,xml]
+----
+<section>
+  <title>Section Title</title> <!--1-->
+</section>
+----
+
+----
+line of code // <1>
+line of code # <2>
+line of code ;; <3>
+line of code <!--4-->
+----
+
+

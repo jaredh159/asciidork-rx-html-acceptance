@@ -1,0 +1,12 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/add-title/
+
+// -- Add a title to a table --
+
+.A table with a title
+[%autowidth]
+|===
+|Column 1, header row |Column 2, header row
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|===

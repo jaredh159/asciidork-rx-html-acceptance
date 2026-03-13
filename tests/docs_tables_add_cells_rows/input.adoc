@@ -1,0 +1,58 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/add-cells-and-rows/
+
+// -- Table cells --
+
+[cols="3,2,3"]
+|===
+|This content is placed in the first cell of column 1
+|This line starts with a vertical bar so this content is placed in a new cell in column 2 |When the processor encounters a whitespace followed by a vertical bar it ends the previous cell and starts a new cell
+|===
+
+// -- Cell specifiers and operators --
+
+[cols="2*"]
+|===
+>s|This cell's specifier indicates that this cell's content is right-aligned and bold.
+|The cell specifier on this cell hasn't been set explicitly, so the  default properties are applied.
+|===
+
+// -- Create a table cell --
+
+[cols="1,1"]
+|===
+|This cell is in column 1, row 1
+|This cell is in column 2, row 1
+|===
+
+[cols="1,1"]
+|===
+|This cell is in column 1, row 1
+|This cell is in column 2, row 1
+
+|This cell is in column 1, row 2
+|    This cell is in column 2, row 2
+|===
+
+// -- Enter a row's cells on a single line --
+
+|===
+|Column 1 |Column 2 |Column 3
+
+|Cell in column 1, row 2 |Cell in column 2, row 2 |Cell in column 3, row 2
+
+|Cell in column 1, row 3
+|Cell in column 2, row 3 |Cell in column 3, row 3
+|===
+
+// -- Enter a row's cells on consecutive lines --
+
+[cols="3*"]
+|===
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+|Cell in column 3, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|Cell in column 3, row 2
+|===

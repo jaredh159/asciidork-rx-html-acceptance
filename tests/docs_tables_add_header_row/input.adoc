@@ -1,0 +1,51 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/add-header-row/
+
+// -- Explicitly assign header to the first row --
+
+// shorthand syntax
+
+[%header,cols="2,2,1"]
+|===
+|Column 1, header row
+|Column 2, header row
+|Column 3, header row
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|Cell in column 3, row 2
+|===
+
+// options attribute
+
+[cols="2*",options="header"]
+|===
+|Column 1, header row
+|Column 2, header row
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+
+|Cell in column 1, row 3
+|Cell in column 2, row 3
+|===
+
+// -- Implicitly assign header to the first row --
+
+|===
+|Column 1, header row |Column 2, header row
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+
+|Cell in column 1, row 3
+|Cell in column 2, row 3
+|===
+
+// -- Deactivate the implicit assignment of header --
+
+[%noheader]
+|===
+|Cell in column 1, row 1 |Cell in column 2, row 1
+
+|Cell in column 1, row 2 |Cell in column 2, row 2
+|===

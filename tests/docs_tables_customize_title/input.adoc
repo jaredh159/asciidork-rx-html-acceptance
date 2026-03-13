@@ -1,0 +1,76 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/customize-title-label/
+
+// -- Modify the label using table-caption --
+
+= Document Title
+:table-caption: Data Set
+
+.A table with a title
+[cols="2,1"]
+|===
+|Lots and lots of data |A little data
+
+|834,734 |3
+|3,999,271.5601 |5
+|===
+
+|===
+|Group |Climate |Example
+
+|A
+|Tropical
+|Suva, Fiji
+
+|B
+|Arid
+|Lima, Peru
+|===
+
+.Another table with a title
+|===
+|Value |Result |Notes
+
+|Null |A mystery |See Appendix R
+|===
+
+// -- Modify the label using caption --
+
+[caption="Table A. "]
+.A table with a custom label
+[cols="3*"]
+|===
+|Null
+|A mystery
+|See Appendix R
+|===
+
+// custom counter-based caption
+
+// NB: we're not supporting counters as of now
+
+// [caption=,title="{table-caption} {counter:table-number}"]
+// [%header,cols=2*]
+// |===
+// |Name of Column 1
+// |Name of Column 2
+//
+// |Cell in column 1, row 1
+// |Cell in column 2, row 1
+//
+// |Cell in column 1, row 2
+// |Cell in column 2, row 2
+// |===
+//
+// .{empty}
+// [caption="{table-caption} {counter:table-number}"]
+// [%header,cols=2*]
+// |===
+// |Name of Column 1
+// |Name of Column 2
+//
+// |Cell in column 1, row 1
+// |Cell in column 2, row 1
+//
+// |Cell in column 1, row 2
+// |Cell in column 2, row 2
+// |===

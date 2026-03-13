@@ -1,0 +1,90 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/align-by-column/
+
+// -- Horizontal alignment operators --
+
+// center column content horizontally
+
+[cols="^4,1"]
+|===
+|This content is horizontally centered.
+|There isn't a horizontal alignment operator on this column's specifier, so the column falls back to the default horizontal alignment.
+Content is left-aligned by default.
+|===
+
+// horizontal alignment and multiplier operator order
+
+[cols="2*^",options=header]
+|===
+|Column name
+|Column name
+
+|This content is horizontally centered.
+|This content is also horizontally centered.
+|===
+
+// right align column content
+
+[cols=">4,1"]
+|===
+|This content is aligned to the right side of the column.
+|There isn't a horizontal alignment operator on this column's specifier, so the column falls back to the default horizontal alignment.
+Content is left-aligned by default.
+|===
+
+// right alignment and multiplier operator order
+
+[cols="2*>",options=header]
+|===
+|Column name
+|Column name
+
+|This content is aligned to the right side of the column.
+|This content is also aligned to the right side of the column.
+|===
+
+// -- Vertical alignment operators --
+
+// bottom align column content
+
+[cols=".>2,1"]
+|===
+|This content is vertically aligned to the bottom of the cell.
+|There isn't a vertical alignment operator on this column's specifier, so the column falls back to the default vertical alignment.
+Content is top-aligned by default.
+|===
+
+// center column content vertically
+
+[cols=".^2,1"]
+|===
+|This content is centered vertically in the cell.
+|There isn't a vertical alignment operator on this column's specifier, so the column falls back to the default vertical alignment.
+Content is top-aligned by default.
+|===
+
+// vertical alignment and multiplier operator order
+
+[cols="2*.^",options=header]
+|===
+|Column name
+|Column name
+
+|This content is vertically centered.
+|This content is also vertically centered.
+|===
+
+// -- Apply horizontal and vertical alignment operators to the same column --
+
+[cols="^.>2,1,>.^1"]
+|===
+|Column name |Column name |Column name
+
+|This content is centered horizontally and aligned to the bottom
+of the cell.
+|There aren't any alignment operators on this column's specifier,
+so the column falls back to the default alignments.
+The default horizontal alignment is left-aligned.
+The default vertical alignment is top-aligned.
+|This content is aligned to the right side of the cell and
+centered vertically.
+|===

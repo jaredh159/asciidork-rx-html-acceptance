@@ -1,0 +1,248 @@
+<div class="table-block">
+  <table class="frame-all grid-all stretch">
+    <colgroup>
+      <col style="width: 50%" />
+      <col style="width: 50%" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="halign-left valign-top">Column Name</th>
+        <th class="halign-left valign-top">Column Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="halign-center valign-top">
+          This content is horizontally centered because the cell specifier
+          includes the <code>^</code> operator.
+        </td>
+        <td class="halign-left valign-top">
+          There isn&#8217;t a horizontal alignment operator on this cell
+          specifier, so the cell falls back to the default horizontal alignment.
+          Content is aligned to the left side of the cell by default.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="table-block">
+  <table class="frame-all grid-all stretch">
+    <colgroup>
+      <col style="width: 50%" />
+      <col style="width: 50%" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="halign-left valign-top">Column Name</th>
+        <th class="halign-left valign-top">Column Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="halign-center valign-top" colspan="2">
+          This cell spans two columns, and its content is horizontally centered
+          because the cell specifier includes the <code>^</code> operator.
+        </td>
+      </tr>
+      <tr>
+        <td class="halign-center valign-top">
+          This content is duplicated in two adjacent columns. Its content is
+          horizontally centered because the cell specifier includes the
+          <code>^</code> operator.
+        </td>
+        <td class="halign-center valign-top">
+          This content is duplicated in two adjacent columns. Its content is
+          horizontally centered because the cell specifier includes the
+          <code>^</code> operator.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="table-block">
+  <table class="frame-all grid-all stretch">
+    <colgroup>
+      <col style="width: 50%" />
+      <col style="width: 50%" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="halign-left valign-top">Column Name</th>
+        <th class="halign-left valign-top">Column Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="halign-right valign-top">
+          This content is aligned to the right side of the cell because the cell
+          specifier includes the <code>&gt;</code> operator.
+        </td>
+        <td class="halign-left valign-top">
+          There isn&#8217;t a horizontal alignment operator on this cell
+          specifier, so the cell falls back to the default horizontal alignment.
+          Content is aligned to the left side of the cell by default.
+        </td>
+      </tr>
+      <tr>
+        <td class="halign-right valign-top" colspan="2">
+          <p>This cell spans two columns.</p>
+          <p>
+            Its content is aligned to the right because the cell specifier
+            includes the <code>&gt;</code> operator. The
+            <code>&gt;</code> operator must be placed directly after the span
+            operator (<code>+</code>).
+          </p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="table-block">
+  <table class="frame-all grid-all stretch">
+    <colgroup>
+      <col style="width: 66.6667%" />
+      <col style="width: 33.3333%" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="halign-left valign-top">Column Name</th>
+        <th class="halign-left valign-top">Column Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="halign-left valign-bottom">
+          This content is aligned to the bottom of the cell because the cell
+          specifier includes the <code>.&gt;</code> operator.
+        </td>
+        <td class="halign-left valign-top">
+          There isn&#8217;t a vertical alignment operator on this cell
+          specifier, so the cell falls back to the alignment assigned via the
+          column specifier or the default vertical alignment. Content is aligned
+          to the top of the cell by default.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="table-block">
+  <table class="frame-all grid-all stretch">
+    <colgroup>
+      <col style="width: 50%" />
+      <col style="width: 50%" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="halign-left valign-top">Column Name</th>
+        <th class="halign-left valign-top">Column Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="halign-left valign-top">
+          There isn&#8217;t a vertical alignment operator on this cell
+          specifier, so the content is aligned to the top of the cell by
+          default.
+        </td>
+        <td class="halign-left valign-bottom" rowspan="2">
+          This cell spans two rows, and its content is aligned to the bottom
+          because the cell specifier includes the <code>.&gt;</code> operator.
+        </td>
+      </tr>
+      <tr>
+        <td class="halign-left valign-top">
+          This content is aligned to the top of the cell by default.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="table-block">
+  <table class="frame-all grid-all stretch">
+    <colgroup>
+      <col style="width: 50%" />
+      <col style="width: 50%" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="halign-left valign-top">Column Name</th>
+        <th class="halign-left valign-top">Column Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="halign-left valign-middle">
+          This content is vertically centered because the cell specifier
+          includes the <code>.^</code> operator.
+        </td>
+        <td class="halign-left valign-top">
+          There isn&#8217;t a vertical alignment operator on this cell
+          specifier, so the cell falls back to the default vertical alignment.
+          Content is aligned to the top of the cell by default.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="table-block">
+  <table class="frame-all grid-all stretch">
+    <colgroup>
+      <col style="width: 33.3333%" />
+      <col style="width: 33.3333%" />
+      <col style="width: 33.3333%" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="halign-left valign-top">Column 1</th>
+        <th class="halign-left valign-top">Column 2</th>
+        <th class="halign-left valign-top">Column 3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="halign-center valign-bottom">
+          The specifier for this cell is <code>^.&gt;</code>. The content is
+          centered horizontally and aligned to the bottom of the cell.
+        </td>
+        <td class="halign-left valign-top">
+          There aren&#8217;t any alignment operators on this cell&#8217;s
+          specifier, so the cell falls back to the default alignments. The
+          default horizontal alignment is the left side of the cell. The default
+          vertical alignment is the top of the cell.
+        </td>
+        <td class="halign-right valign-middle">
+          The specifier for this cell is <code>&gt;.^</code>. The content is
+          aligned to the right side of the cell and centered vertically.
+        </td>
+      </tr>
+      <tr>
+        <td class="halign-center valign-middle" colspan="2" rowspan="3">
+          <p>
+            The specifier for this cell is <code>2.3+^.^</code>. It spans two
+            columns and three rows.
+          </p>
+          <p>Its content is centered horizontally and vertically.</p>
+        </td>
+        <td class="halign-left valign-bottom">
+          The specifier for this cell is <code>3*.&gt;</code>. The cell is
+          duplicated in three consecutive rows in the same column. It&#8217;s
+          content is aligned to the bottom of the cell.
+        </td>
+      </tr>
+      <tr>
+        <td class="halign-left valign-bottom">
+          The specifier for this cell is <code>3*.&gt;</code>. The cell is
+          duplicated in three consecutive rows in the same column. It&#8217;s
+          content is aligned to the bottom of the cell.
+        </td>
+      </tr>
+      <tr>
+        <td class="halign-left valign-bottom">
+          The specifier for this cell is <code>3*.&gt;</code>. The cell is
+          duplicated in three consecutive rows in the same column. It&#8217;s
+          content is aligned to the bottom of the cell.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

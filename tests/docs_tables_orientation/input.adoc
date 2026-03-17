@@ -1,0 +1,25 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/orientation/
+
+// -- Landscape --
+
+// using the rotate option
+
+[%rotate]
+|===
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|===
+
+// using the orientation attribute
+
+[orientation=landscape]
+|===
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|===

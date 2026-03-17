@@ -1,0 +1,12 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/assign-a-role/
+
+// -- Assign a role to a table --
+
+[.name-of-role]
+|===
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|===

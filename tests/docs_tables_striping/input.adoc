@@ -1,0 +1,39 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/striping/
+
+// -- Striping block attribute --
+
+[cols=2*,stripes=even]
+|===
+|A1
+|B1
+|A2
+|B2
+|A3
+|B3
+|===
+
+// using role shorthand
+
+[.stripes-even,cols=2*]
+|===
+|A1
+|B1
+|A2
+|B2
+|A3
+|B3
+|===
+
+// -- Table-stripes document attribute --
+
+:table-stripes: even
+
+[cols=2*]
+|===
+|A1
+|B1
+|A2
+|B2
+|A3
+|B3
+|===

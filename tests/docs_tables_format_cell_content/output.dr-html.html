@@ -1,0 +1,212 @@
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 50%" />
+    <col style="width: 50%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">Column 1</th>
+      <th class="tableblock halign-left valign-top">Column 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-right valign-top">
+        <p class="tableblock">
+          <code
+            >This content is duplicated across two columns (2*) and aligned to
+            the right side of the cell (&gt;).</code
+          >
+        </p>
+        <p class="tableblock">
+          <code>It&#8217;s rendered using a monospace font (m).</code>
+        </p>
+      </td>
+      <td class="tableblock halign-right valign-top">
+        <p class="tableblock">
+          <code
+            >This content is duplicated across two columns (2*) and aligned to
+            the right side of the cell (&gt;).</code
+          >
+        </p>
+        <p class="tableblock">
+          <code>It&#8217;s rendered using a monospace font (m).</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-center valign-bottom" rowspan="3">
+        <p class="tableblock">
+          <strong
+            >This cell spans 3 rows (<code>3+</code>). The content is centered
+            horizontally (<code>^</code>), vertically aligned to the bottom of
+            the cell (<code>.&gt;</code>), and styled as strong
+            (<code>s</code>).</strong
+          >
+        </p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          <em>This content is italicized (<code>e</code>).</em>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          <code>This content is rendered using a monospace font (m).</code>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          <strong>This content is bold (<code>s</code>).</strong>
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 50%" />
+    <col style="width: 50%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">Column 1, header row</th>
+      <th class="tableblock halign-left valign-top">Column 2, header row</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          <code
+            >This content is rendered using a monospace font because the
+            column&#8217;s specifier includes the <code>m</code> operator.</code
+          >
+        </p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          <code
+            >This content is rendered using a monospace font because the
+            column&#8217;s specifier includes the <code>m</code> operator.</code
+          >
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          <strong
+            >This content is rendered as bold paragraph text because the
+            <code>s</code> operator in the cell&#8217;s specifier overrides the
+            style operator in the column specifier.</strong
+          >
+        </p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          <code
+            ><strong
+              >This content is rendered using a monospace font because the
+              column&#8217;s specifier includes the <code>m</code> operator.
+              It&#8217;s also bold because it&#8217;s marked up with the inline
+              syntax for bold formatting.</strong
+            ></code
+          >
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          This content is rendered as regular paragraph text because the
+          <code>d</code> operator in the cell&#8217;s specifier overrides the
+          style operator in the column specifier.
+        </p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          <code
+            >This content is rendered using a monospace font because the
+            column&#8217;s specifier includes the <code>m</code> operator.</code
+          >
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 50%" />
+    <col style="width: 50%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">Normal Style</th>
+      <th class="tableblock halign-left valign-top">AsciiDoc Style</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          This cell isn&#8217;t prefixed with an <code>a</code>, so the
+          processor doesn&#8217;t interpret the following lines as an AsciiDoc
+          list.
+        </p>
+        <p class="tableblock">* List item 1 * List item 2 * List item 3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <div class="content">
+          <div class="paragraph">
+            <p>
+              This cell is prefixed with an <code>a</code>, so the processor
+              interprets the following lines as an AsciiDoc list.
+            </p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li><p>List item 1</p></li>
+              <li><p>List item 2</p></li>
+              <li><p>List item 3</p></li>
+            </ul>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">
+          This cell isn&#8217;t prefixed with an <code>a</code>, so the
+          processor doesn&#8217;t interpret the listing block delimiters or the
+          <code>source</code> style.
+        </p>
+        <p class="tableblock">
+          [source,python] ---- import os print ("%s" %(os.uname())) ----
+        </p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <div class="content">
+          <div class="paragraph">
+            <p>
+              This cell is prefixed with an <code>a</code>, so the listing block
+              is processed and rendered according to the
+              <code>source</code> style rules.
+            </p>
+          </div>
+          <div class="listingblock">
+            <div class="content">
+              <pre
+                class="highlight"
+              ><code class="language-python" data-lang="python">import os print "%s" %(os.uname())</code></pre>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

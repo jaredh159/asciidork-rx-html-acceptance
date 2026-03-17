@@ -1,0 +1,25 @@
+// https://docs.asciidoctor.org/asciidoc/latest/blocks/open-blocks/
+
+// -- Open block syntax --
+
+--
+An open block can be an anonymous container,
+or it can masquerade as any other block.
+--
+
+// masquerading as a sidebar
+
+[sidebar]
+.Related information
+--
+This is aside text.
+
+It is used to present information related to the main content.
+--
+
+// masquerading as a source block
+
+[source]
+--
+puts "I'm a source block!"
+--

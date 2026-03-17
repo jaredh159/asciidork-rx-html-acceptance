@@ -1,0 +1,63 @@
+// https://docs.asciidoctor.org/asciidoc/latest/comments/
+
+// -- Comment lines --
+
+// A single-line comment.
+
+// line comment separating two lists
+
+* first list
+
+//
+
+* second list
+
+// -- Comment blocks --
+
+////
+A comment block.
+
+Notice it's a delimited block.
+////
+
+// alternate block comment syntax
+
+[comment]
+--
+A comment block.
+
+Notice it's a delimited block.
+--
+
+// comment paragraph
+
+[comment]
+A paragraph comment.
+Like all paragraphs, the lines must be contiguous.
+
+Not a comment.
+
+// block comment attached to list item
+
+* first item
++
+////
+A comment block in a list.
+
+Notice it's attached to the preceding list item.
+////
+
+* second item
+
+// block comment within a table
+
+|===
+a|
+cell text
+
+////
+A comment block in a table.
+
+Notice the cell has the "a" (AsciiDoc) style.
+////
+|===

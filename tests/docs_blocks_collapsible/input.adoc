@@ -1,0 +1,46 @@
+// https://docs.asciidoctor.org/asciidoc/latest/blocks/collapsible/
+
+// -- Collapsible block --
+
+[%collapsible]
+====
+This content is only revealed when the user clicks the block title.
+====
+
+// collapsible paragraph
+
+[example%collapsible]
+This content is only revealed when the user clicks the block title.
+
+// -- Customize the toggle text --
+
+.Click to reveal the answer
+[%collapsible]
+====
+This is the answer.
+====
+
+// -- Default to open --
+
+.Too much detail? Click here.
+[%collapsible%open]
+====
+This content is revealed by default.
+
+If it's taking up too much space, the reader can hide it.
+====
+
+// -- Use as an enclosure --
+
+.Show stacktrace
+[%collapsible]
+====
+....
+Error: Content repository not found (url: https://git.example.org/repo.git)
+    at transformGitCloneError
+    at git.clone.then.then.catch
+Caused by: HttpError: HTTP Error: 401 HTTP Basic: Access Denied
+    at GitCredentialManagerStore.rejected
+    at fill.then
+....
+====

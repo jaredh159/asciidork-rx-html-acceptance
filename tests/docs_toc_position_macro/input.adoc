@@ -1,0 +1,17 @@
+// https://docs.asciidoctor.org/asciidoc/latest/toc/position/
+
+// -- TOC macro --
+
+= The Intrepid Chronicles
+Kismet Lee; B. Steppenwolf; Pax Draeke
+:toc: macro
+
+== Certain Peril
+
+toc::[]
+
+Daylight trickles across the cobblestones...
+
+== Dawn on the Plateau
+
+Hanging from...

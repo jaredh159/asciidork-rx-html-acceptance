@@ -1,0 +1,19 @@
+// https://docs.asciidoctor.org/asciidoc/latest/toc/position/
+
+// -- Beneath the preamble --
+
+= The Intrepid Chronicles
+Kismet Lee; B. Steppenwolf; Pax Draeke
+:toc: preamble
+
+This adventure begins on a frigid morning.
+We've run out of coffee beans, but leaving our office means venturing into certain peril.
+
+== Certain Peril
+
+Daylight trickles across the cobblestones...
+
+== Dawn on the Plateau
+
+Hanging from...
+

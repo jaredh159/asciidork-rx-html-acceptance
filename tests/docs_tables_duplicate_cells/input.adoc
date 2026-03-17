@@ -1,0 +1,18 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/duplicate-cells/
+
+// -- Duplicate a cell and its properties --
+
+|===
+|Column 1, header row |Column 2, header row |Column 3, header row
+
+2*|This cell is duplicated in columns 1 and 2 because its specifier contains a duplication of `2*`
+|Cell in column 3, row 2
+
+|Cell in column 1, row 3
+|Cell in column 2, row 3
+3*e|This cell specifier contains the duplication `3*` and style operator `e`.
+
+The cell's text is italicized and duplicated in column 3, row 3 and columns 1 and 2 on row 4.
+
+|Cell in column 3, row 4
+|===

@@ -1,0 +1,77 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/data-format/
+
+// -- PSV (default) --
+
+[cols=2*]
+|===
+|The default separator in PSV tables is the \| character.
+|The \| character is often referred to as a "`pipe`".
+|===
+
+// using the vbar attribute
+
+[cols=2*]
+|===
+|The default separator in PSV tables is the {vbar} character.
+|The {vbar} character is often referred to as a "`pipe`".
+|===
+
+// custom separator
+
+[cols=2*,separator=¦]
+|===
+¦The default separator in PSV tables is the | character.
+¦The | character is often referred to as a "`pipe`".
+|===
+
+// -- CSV --
+
+[%header,format=csv]
+|===
+Artist,Track,Genre
+Baauer,Harlem Shake,Hip Hop
+The Lumineers,Ho Hey,Folk Rock
+|===
+
+// -- DSV --
+
+[%header,format=dsv]
+|===
+Artist:Track:Genre
+Robyn:Indestructible:Dance
+The Piano Guys:Code Name Vivaldi:Classical
+|===
+
+// custom DSV separator
+
+[format=dsv,separator=;]
+|===
+a;b;c
+d;e;f
+|===
+
+// -- Shorthand notation --
+
+// CSV shorthand
+
+,===
+Artist,Track,Genre
+
+Baauer,Harlem Shake,Hip Hop
+,===
+
+// DSV shorthand
+
+:===
+Artist:Track:Genre
+
+Robyn:Indestructible:Dance
+:===
+
+// -- Formatting cells in data tables --
+
+[format=csv,cols="1h,1a"]
+|===
+Sky,image::sky.jpg[]
+Forest,image::forest.jpg[]
+|===

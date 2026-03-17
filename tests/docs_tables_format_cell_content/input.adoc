@@ -1,0 +1,71 @@
+// https://docs.asciidoctor.org/asciidoc/latest/tables/format-cell-content/
+
+// -- Apply a style to a table cell --
+
+|===
+|Column 1 |Column 2
+
+2*>m|This content is duplicated across two columns (2*) and aligned to the right side of the cell (>).
+
+It's rendered using a monospace font (m).
+
+.3+^.>s|This cell spans 3 rows (`3+`).
+The content is centered horizontally (`+^+`), vertically aligned to the bottom of the cell (`.>`), and styled as strong (`s`).
+e|This content is italicized (`e`).
+
+m|This content is rendered using a monospace font (m).
+
+s|This content is bold (`s`).
+|===
+
+// Override the column style on a cell
+
+[cols="m,m"]
+|===
+|Column 1, header row |Column 2, header row
+
+|This content is rendered using a monospace font because the column's specifier includes the `m` operator.
+|This content is rendered using a monospace font because the column's specifier includes the `m` operator.
+
+s|This content is rendered as bold paragraph text because the `s` operator in the cell's specifier overrides the style operator in the column specifier.
+|*This content is rendered using a monospace font because the column's specifier includes the `m` operator.
+It's also bold because it's marked up with the inline syntax for bold formatting.*
+
+d|This content is rendered as regular paragraph text because the `d` operator in the cell's specifier overrides the style operator in the column specifier.
+|This content is rendered using a monospace font because the column's specifier includes the `m` operator.
+|===
+
+// -- Use AsciiDoc block elements in a table cell --
+
+|===
+|Normal Style |AsciiDoc Style
+
+|This cell isn't prefixed with an `a`, so the processor doesn't interpret the following lines as an AsciiDoc list.
+
+* List item 1
+* List item 2
+* List item 3
+
+a|This cell is prefixed with an `a`, so the processor interprets the following lines as an AsciiDoc list.
+
+* List item 1
+* List item 2
+* List item 3
+
+|This cell isn't prefixed with an `a`, so the processor doesn't interpret the listing block delimiters or the `source` style.
+
+[source,python]
+----
+import os
+print ("%s" %(os.uname()))
+----
+
+a|This cell is prefixed with an `a`, so the listing block is processed and rendered according to the `source` style rules.
+
+[source,python]
+----
+import os
+print "%s" %(os.uname())
+----
+
+|===

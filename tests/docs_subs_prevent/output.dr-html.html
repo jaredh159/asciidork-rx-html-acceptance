@@ -1,0 +1,51 @@
+<div class="paragraph">
+  <p>
+    In /items/{id}, the id attribute isn&#8217;t replaced. The curly braces
+    around it are preserved.
+  </p>
+</div>
+<div class="paragraph">
+  <p>
+    *Stars* isn&#8217;t displayed as bold text. The asterisks around it are
+    preserved.
+  </p>
+</div>
+<div class="paragraph">
+  <p>
+    &amp;sect; appears as an entity reference. &sect; foo It&#8217;s not
+    converted into the section symbol (&#167;).
+  </p>
+</div>
+<div class="paragraph">
+  <p>
+    =&gt; The backslash prevents the equals sign followed by a greater than sign
+    from combining to form a double arrow character (&#8658;).
+  </p>
+</div>
+<div class="paragraph">
+  <p>
+    [[Word]] is not interpreted as an anchor. The double brackets around it are
+    preserved.
+  </p>
+</div>
+<div class="paragraph">
+  <p>
+    [[[Word]]] is not interpreted as a bibliography anchor. The triple brackets
+    around it are preserved.
+  </p>
+</div>
+<div class="paragraph">
+  <p>
+    ((DD AND CC) OR (DD AND EE)) is not interpreted as a flow index term. The
+    double brackets around it are preserved.
+  </p>
+</div>
+<div class="paragraph">
+  <p>The URL https://example.org isn&#8217;t converted into an active link.</p>
+</div>
+<div class="paragraph">
+  <p>
+    The text __func__ will appear with two underscores in front of it and after
+    it. It won&#8217;t be italicized.
+  </p>
+</div>

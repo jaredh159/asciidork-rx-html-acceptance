@@ -1,0 +1,55 @@
+// https://docs.asciidoctor.org/asciidoc/latest/subs/apply-subs-to-blocks/
+
+// -- Set the subs attribute on a block --
+
+[source,java,subs="verbatim,quotes"]
+----
+System.out.println("Hello *<name>*")
+----
+
+// subs with macros
+
+[source,java,subs="verbatim,macros"]
+----
+System.out.println("No bold *here*");
+pass:c,q[System.out.println("Hello *<name>*");]
+----
+
+// -- Add and remove substitution types from a default group --
+
+// add attributes substitution
+
+[source,xml,subs="attributes+"]
+----
+<version>{version}</version>
+----
+
+// remove callouts
+
+[source,xml,subs="-callouts"]
+.An illegal XML tag
+----
+<1>
+  content inside "1" tag
+</1>
+----
+
+// combined add/remove
+
+[source,xml,subs="attributes+,+replacements,-callouts"]
+----
+<version>{version}</version>
+<copyright>(C) ACME</copyright>
+<1>
+  content inside "1" tag
+</1>
+----
+
+// using an attribute to store subs value
+
+:markup-in-source: +quotes
+
+[source,java,subs="{markup-in-source}"]
+----
+System.out.println("Hello *bold* text").
+----
